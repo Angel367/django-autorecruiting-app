@@ -1,31 +1,17 @@
-import json
-from datetime import datetime
 import base64
 import io
+import json
 
 import matplotlib.pyplot as plt
 import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-
-from .test_data_create import *
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import redirect
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 
-from .templatetags.custom_filters import *
 from .models import *
-
-from django.shortcuts import render
-
-# Create your views here.
-#Messenger import
-from django.shortcuts import render
-from django.http import JsonResponse
-from .models import MessageModel
 
 
 def index(request):
@@ -165,17 +151,18 @@ def hr_all(request):
 def get_all_hrs_of_hrbp(target_hrbp_id):
     return HR.objects.filter(hRBP_id=target_hrbp_id)
 
-def get_all_vacancies_by_hr_or_hrbp_id(hr_bp_id, isArchived=False):
-    user = User.objects.get(id=hr_bp_id)
+
+def get_all_vacancies_by_hr_or_hrbp_id(hr_bp_id, is_archived=False):
+    user = CustomUser.objects.get(id=hr_bp_id)
     if user.is_HR:
         print(user.username, user.hr.hRBP_id)
     if user.is_HR:
         target_hr = HR.objects.get(user_id=hr_bp_id)
         print(target_hr.user.username)
-        return Vacancy.objects.filter(hR_id=target_hr, isArchived=isArchived)
+        return Vacancy.objects.filter(hR_id=target_hr, isArchived=is_archived)
     elif user.is_HRBP:
         target_hrbp = HRBP.objects.get(user_id=hr_bp_id)
-        return Vacancy.objects.filter(hRBP_id=target_hrbp.id, isArchived=isArchived)
+        return Vacancy.objects.filter(hRBP_id=target_hrbp.id, isArchived=is_archived)
 
 
 @login_required
@@ -378,8 +365,6 @@ def vacancy_information(request, id):
     return render(request, 'vacancy-information.html', context=context)
 
 
-
-
 # User = get_user_model()
 #
 # def send_message(request):
@@ -444,7 +429,7 @@ def send_message(request):
 
 def get_user(username):
     try:
-        user = User.objects.get(username=username)
+        user = CustomUser.objects.get(username=username)
         print(username)
         return user
     except ObjectDoesNotExist:
@@ -452,7 +437,6 @@ def get_user(username):
 
 
 from django.http import JsonResponse
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import MessageModel
@@ -480,6 +464,7 @@ def get_user_messages(request, username):
 
     return JsonResponse(message_list, safe=False)
 
+
 def get_user_messages_json(username, recipient):
     """
     Returns a JSON response with all messages where the given user is either the sender or the recipient.
@@ -506,6 +491,7 @@ def get_user_messages_json(username, recipient):
     message_list.reverse()
     return message_list
 
+
 def login_view(request):
     # on_start_function()
     if request.method == 'POST':
@@ -522,7 +508,7 @@ def login_view(request):
             else:
                 return redirect('/hr/vacancies')  # Replace 'home' with your desired redirect URL
         else:
-            error_message = "Invalid login credentials"
+            error_message = "Пользователь с такими данными не найден"
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')

@@ -1,5 +1,4 @@
 from datetime import datetime
-import enum
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -10,10 +9,11 @@ from django.db.models import (Model, TextField, DateTimeField, ForeignKey,
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+
 # Create your models here.
 
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     is_HR = models.BooleanField(default=False)
     is_HRBP = models.BooleanField(default=False)
     patronymic = models.CharField(max_length=31, blank=True)
@@ -80,12 +80,12 @@ class Customer(models.Model):
 
 
 class HRBP(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
 class HR(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     hRBP = models.ForeignKey(HRBP, on_delete=models.CASCADE, null=True, blank=True)
 
 
@@ -136,15 +136,16 @@ class Candidate(models.Model):
     def get_interview_date(self):
         return self.interviewDate.strftime("%Y-%m-%d")
 
+
 class MessageModel(Model):
     """
-    This class represents a chat message. It has a owner (user), timestamp and
+    This class represents a chat message. It has an owner (user), timestamp and
     the message body.
 
     """
-    user = ForeignKey(User, on_delete=CASCADE, verbose_name='user',
+    user = ForeignKey(CustomUser, on_delete=CASCADE, verbose_name='user',
                       related_name='from_user', db_index=True)
-    recipient = ForeignKey(User, on_delete=CASCADE, verbose_name='recipient',
+    recipient = ForeignKey(CustomUser, on_delete=CASCADE, verbose_name='recipient',
                            related_name='to_user', db_index=True)
     timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False,
                               db_index=True)
@@ -181,11 +182,10 @@ class MessageModel(Model):
         Trims white spaces, saves the message and notifies the recipient via WS
         if the message is new.
         """
-        new = self.id
         self.body = self.body.strip()  # Trimming whitespaces from the body
         super(MessageModel, self).save(*args, **kwargs)
-        #if new is None:
-            #self.notify_ws_clients()
+        # if new is None:
+        # self.notify_ws_clients()
 
     # Meta
     class Meta:
@@ -193,5 +193,3 @@ class MessageModel(Model):
         verbose_name = 'message'
         verbose_name_plural = 'messages'
         ordering = ('-timestamp',)
-
-

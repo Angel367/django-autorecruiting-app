@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-AUTH_USER_MODEL = "autorecruiting.User"
+AUTH_USER_MODEL = "autorecruiting.CustomUser"
 
 
 # Application definition

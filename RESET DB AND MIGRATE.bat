@@ -18,7 +18,7 @@ del db.sqlite3
 
 REM Pause the script to see the output
 
-C:\Users\Владелец\PycharmProjects\ooooooooooooooooooooooooooo\venv\Scripts\python.exe manage.py makemigrations
+python.exe manage.py makemigrations
 python manage.py makemigrations autorecruiting
 python manage.py migrate
 python manage.py migrate autorecruiting

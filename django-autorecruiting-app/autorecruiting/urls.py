@@ -36,8 +36,7 @@ urlpatterns = [
     # path('hr/messenger/hrbp', views.hr_vacancies, name='hr-messenger-hrbp'),
     # path('hr/messenger/employer', views.hr_vacancies, name='hr-messenger-employer'),
     # path('hr/messenger/hrbp-to-hrs', views.hr_vacancies, name='hrs-messenger-hrbp'),
-
-    #messenger
+    # messenger
     # path('send_message/', views.send_message, name='send_message'),
     # path('get_messages/<int:user_id>/<int:recipient_id>/', views.get_messages, name='get_messages'),
 

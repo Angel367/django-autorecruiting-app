@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Авторизация</title>
+    <title>Авторизация</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 
 </head>
 <body>
-{%  include "basic/header.html" %}
+{% include "basic/header.html" %}
 <main>
-<div class="login-block">
-  <div class="login-header">Авторизация</div>
-  <form method="POST" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
-    {% csrf_token %}
-{#    <label for="username">Username:</label>#}
-    <input type="text" id="username" name="username" placeholder="Логин" required>
-{#    <label for="password">Password:</label>#}
-    <input type="password" id="password" name="password" placeholder="Пароль" required>
-    <input type="submit" value="Вход">
-  </form>
-</div>
+    <div class="login-block">
+        <div class="login-header">Авторизация</div>
+        <div>
+            {% if error_message %}
+                {{ error_message }}
+            {% endif %}
+        </div>
+        <form method="POST" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
+            {% csrf_token %}
+            {#    <label for="username">Username:</label>#}
+            <input type="text" id="username" name="username" placeholder="Логин" required>
+            {#    <label for="password">Password:</label>#}
+            <input type="password" id="password" name="password" placeholder="Пароль" required>
+            <input type="submit" value="Вход">
+        </form>
+    </div>
 </main>
-{%  include "basic/footer.html" %}
+{% include "basic/footer.html" %}
 </body>
 </html>
