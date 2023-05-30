@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import redirect
 from django.shortcuts import render
+from .test_data_create import on_start_function
 
 from .models import *
 
@@ -493,7 +494,8 @@ def get_user_messages_json(username, recipient):
 
 
 def login_view(request):
-    # on_start_function()
+    if len(CustomUser.objects.all()) == 0:
+        on_start_function()
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
