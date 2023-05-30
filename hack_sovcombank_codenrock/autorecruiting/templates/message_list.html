@@ -1,0 +1,42 @@
+
+<form id="message-form">
+    <textarea name="body"></textarea>
+    <textarea name="user"></textarea>
+    <textarea name="recipient"></textarea>
+    <button type="submit">Send</button>
+</form>
+
+<script>
+document.querySelector('#message-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  let body = document.querySelector('textarea[name="body"]').value;
+  let user = document.querySelector('textarea[name="user"]').value;
+  let recipient = document.querySelector('textarea[name="recipient"]').value;
+
+  let data = {
+    body: body,
+    user: user,
+    recipient: recipient
+  };
+
+  fetch('/send_message/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data), headers: {'X-CSRFToken': '{{ csrf_token }}'},
+  })
+  .then(response => {
+  console.log(response);
+  return response.json();
+  })
+  .then(data => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+});
+</script>
+

@@ -1,0 +1,44 @@
+.card-box{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2em;
+    background: #E5F5CF;
+    padding: 1.5em 2em;
+    position: relative;
+    right: 0;
+    left: 0;
+}
+
+.card-of-candidate{
+    width: 500px;
+    height: 250px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: #FEFEFE;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+    padding: .5em;
+}
+.candidate-info div{
+    padding: .5em;
+}
+.candidate-more{
+    text-align: right;
+}
+.candidate-name{
+    font-size: 1.2em;
+    font-weight: 100;
+}
+.candidate-info div span:nth-child(1), .candidate-date-of-update{
+    font-weight: 100;
+    color: #555555;
+}
+.candidate-info div span:nth-child(2), .candidate-more{
+    font-weight: 900;
+}
+.hr-a{
+    text-align: center;
+}

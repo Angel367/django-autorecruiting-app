@@ -1,0 +1,67 @@
+main{
+    align-items: center;
+    justify-content: center;
+}
+.vacancy-card{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2em;
+    background: #FEFEFE;
+    padding: 1.5em 2em;
+    position: relative;
+    width: 800px;
+    border-radius: 10px;
+    margin:1.5em 2em;
+}
+.vacancy-desc, .hr-info{
+    display: flex;
+    flex-direction: column;
+}
+.vacancy-info{
+    border-bottom: 3px solid #F5A07B;
+}
+.vacancy-desc label,.vacancy-desc textarea, .hr-info > input{
+     font-size: 1em;
+     padding: .3em;
+}
+.vacancy-desc textarea , .vacancy-info select, .vacancy-info option, .hr-info > input{
+    margin-bottom: .7em;
+    margin-inline-start: 1.7em;
+    line-height: 1.1em;
+}
+.buttons-holder button i{
+    line-height: 1.1em;
+    font-size: 1.1em;
+}
+.vacancy-header label, .vacancy-header input{
+    font-size: 1.5em;
+    letter-spacing: 1px;
+    line-height: 1.3em;
+}
+.vacancy-header{
+    padding: .5em;
+
+}
+
+.vacancy-desc textarea, .vacancy-header input, .vacancy-info select, .vacancy-info option, .hr-info > input{
+    border: none;
+    padding: .5em 2em;
+    background: #F6FDEC;
+    border-radius: 5px;
+}
+.buttons-holder button{
+    border: none;
+    padding: .5em 2em;
+    background: #F7D7AE;
+    border-radius: 5px;
+}
+.buttons-holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    padding-top: 1em;
+    padding-bottom: 0;
+}
+

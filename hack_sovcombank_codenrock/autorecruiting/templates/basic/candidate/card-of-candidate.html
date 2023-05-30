@@ -1,0 +1,28 @@
+{% load static %}
+{% load custom_filters %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/candidate-cards.css' %}">
+<div class="card-of-candidate">
+    <div class="candidate-image-box">
+        {% load static %}
+        <img src="{% static 'img/candidate-photo.png' %}">
+    </div>
+    <div class="candidate-info">
+        <div class="candidate-name">{{ candidate.surname }} {{ candidate.name }} {{ candidate.patronymic }}</div>
+        <div class="candidate-age">
+            <span>Возраст: </span>
+            <span>{{ candidate.birthdayDate|display_age }}</span>
+        </div>
+        <dt>Локация:</dt>
+            <dd>{{ candidate.city.cityName}}, {{ candidate.city.country.countryName}}</dd>
+        <div class="candidate-experience">
+            <span>Опыт работы: </span>
+            <span>{{ candidate.workExperienceDuration|display_months }}</span>
+        </div>
+    </div>
+    <div class="candidate-date-of-update">
+       Обновлено 3 дня назад
+    </div>
+    <div class="candidate-more">
+        <a href="/candidate-information/main/{{ candidate.id }}">Подробнее</a>
+    </div>
+</div>

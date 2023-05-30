@@ -1,0 +1,41 @@
+{% load static %}
+{% load custom_filters %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hr-page/profile-panel.css' %}">
+
+<div class="profile-panel">
+    <div class="profile-card">
+         <div class="profile-image-box">
+        {% load static %}
+        <img src="{% static 'img/candidate-photo.png' %}">
+        </div>
+        <div class="candidate-info">
+            <div class="candidate-name"> {{ candidate.surname }} {{ candidate.name }} {{ candidate.patronymic }} </div>
+            <div class="candidate-age">
+                <span>Возраст: </span>
+                <span>{{ candidate.birthdayDate|display_age }} </span>
+            </div>
+
+        </div>
+        <div class="candidate-experience">
+                <span>Опыт работы: </span>
+                <span> {{ candidate.workExperienceDuration|display_months }}</span>
+            </div>
+        <div class="candidate-info vacany">
+            <div class="vacancy-name">
+                <span>Вакансия: </span>
+                <span> {{ candidate.vacancy.name }} </span>
+            </div>
+            <div class="candidate-age">
+                <span> Статус: </span>
+                <span>{{ candidate.get_status_display }}</span>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="profile-panel-manage">
+        <a href="/candidate-information/main/{{ candidate.id }}"><div>Основная информация</div></a>
+        <a href="/candidate-information/messenger/{{ candidate.id }}"><div>Написать</div></a>
+        <a href="{% static 'img/candidate-photo.png' %}" download><div>Скачать резюме</div></a>
+    </div>
+</div>

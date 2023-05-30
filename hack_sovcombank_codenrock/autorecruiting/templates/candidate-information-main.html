@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр кандидата</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
+</head>
+<body>
+    {%  include "basic/header.html" %}
+    <main>
+        {% include "basic/candidate/profile-candidate.html" %}
+        {% include "basic/candidate/candidate-main.html" %}
+
+    </main>
+    {% include "basic/footer.html" %}
+</body>
+</html>

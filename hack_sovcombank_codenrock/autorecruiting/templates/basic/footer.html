@@ -1,0 +1,25 @@
+<footer id="footer">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+    <script src="https://kit.fontawesome.com/98db032af2.js" crossorigin="anonymous"></script>
+    <div class="icon-social">
+        <a href="#"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a>
+        <a href="#"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+    </div>
+</footer>
+<script>
+
+    if(document.documentElement.clientHeight > document.documentElement.offsetHeight){
+        console.log(document.body.style.height)
+        document.getElementById('footer').style.position="fixed";
+        document.getElementById('footer').style.left="0px";
+        document.getElementById('footer').style.right="0px";
+        document.getElementById('footer').style.bottom="0px";
+        console.log(document.getElementById('footer').clientHeight);
+
+        document.body.style.height=(document.documentElement.clientHeight-
+            document.getElementById('footer').clientHeight)+"px";
+        //document.body.style.justifyContent="flex-start";
+    }
+</script>

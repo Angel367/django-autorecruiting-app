@@ -1,0 +1,81 @@
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/filter-sort-panel.css' %}">
+<div class="panel-box">
+    <div class="panel-header">
+        Найти сотрудника
+    </div>
+    <div class="panel-desc">
+        Поиск лучших кандидатов на вакансии
+    </div>
+    <form method="post" action="/find-candidates/">
+     {% csrf_token %}
+{#         <input name="main_vacancy_id" type="text" value="{{ main_vacancy.id }}" hidden>#}
+        <select name="main_vacancy_id" class="panel-select vacancy">
+{#        TODO fill inputs by vacancy inform#}
+            {% if  main_vacancy %}
+                <option value="{{ main_vacancy.id }}">{{main_vacancy.name}}</option>
+            {% else %}
+                <option value="">Поиск по вакансиям</option>
+            {% endif %}
+
+            {% for vacancy in vacancies %}
+               {% if  main_vacancy != vacancy %}
+            <option value={{ vacancy.id }}>{{ vacancy.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <select name="city" class="panel-select">
+            {% if main_vacancy %}
+            <option value="{{ main_vacancy.city.id }}">{{ main_vacancy.city.cityName }}, {{ main_vacancy.city.country.countryName }} </option>
+            {% else %}
+                <option value="">Локация</option>
+            {% endif %}
+            {% for city in cities %}
+                {% if city.id != main_vacancy.city.id %}
+                <option value={{ city.id }}>{{ city.country.countryName }}, {{ city.cityName }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <select name="speciality" class="panel-select">
+            {% if main_vacancy %}
+            <option value="{{ main_vacancy.speciality.id }}">{{ main_vacancy.speciality.specialityName }}</option>
+            {% else %}
+                <option value="">Специальность</option>
+            {% endif %}
+            {% for speciality in specialities %}
+                {% if speciality.id != main_vacancy.speciality.id %}
+                <option value={{ speciality.id }}> {{ speciality.specialityName }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <div class="from-to">
+
+                <input placeholder="Опыт работы от" type="number" value="{{ main_vacancy.workExperienceFrom }}" name="workExperienceFrom">
+
+                <input placeholder="Опыт работы до" type="number" value="{{ main_vacancy.workExperienceTo }}" name="workExperienceTo">
+        </div>
+        <div class="from-to">
+
+                <input placeholder="Зарплата от" type="number" value="{{ main_vacancy.suggestedSalaryFrom }}" name="suggestedSalaryFrom">
+
+                <input placeholder="Зарплата до" type="number" value="{{ main_vacancy.suggestedSalaryTo }}" name="suggestedSalaryTo">
+            </div>
+{#        <select class="panel-select">#}
+{#            <option value="">Сортировать по</option>#}
+{#            <option value="1">1</option>#}
+{#            <option value="2">2</option>#}
+{#        </select>#}
+{#        <div class="filters">#}
+{#            <div class="filters-text">#}
+{#                <a href="#">Еще фильтры</a>#}
+{#            </div>#}
+{##}
+{#            <div class="checkbox-holder">#}
+{#                <input type="checkbox">#}
+{#                <input type="checkbox">#}
+{#                <input type="checkbox">#}
+{#            </div>#}
+{#        </div>#}
+        <input type="submit" value="Найти" name="find">
+    </form>
+</div>

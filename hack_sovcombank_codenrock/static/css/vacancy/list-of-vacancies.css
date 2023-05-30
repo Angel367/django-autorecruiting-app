@@ -1,0 +1,47 @@
+.vacancy-module{
+    background: #FEFEFE;
+    padding: 2em 2.5em;
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    /*justify-content: center;*/
+
+}
+.vacancy-module form{
+    padding: .5em 1.5em;
+    display: flex;
+    flex-shrink: 2;
+    background: #FBECD8;
+    border-radius: 5px;
+    gap: 2em;
+}
+.vacancy-module form input[type=text]{
+    border: none;
+    background: #FFFFFF;
+    border-radius: 5px;
+    flex-grow: 2;
+    padding: .5em .8em;
+}
+.vacancy-module form input[type=text]::placeholder{
+    color: #C0C0C0;
+}
+ .vacancy-module form button, .vacancy-module form div{
+    background: #F5A07B;
+    border-radius: 5px;
+    border: none;
+    padding: .5em .8em;
+}
+ .vacancy-list{
+     display: flex;
+     flex-direction: column;
+     gap: 1em;
+ }
+  .hr-list{
+     display: flex;
+     flex-wrap: wrap;
+     gap: 1em;
+ }
+.card-of-candidate{
+    align-self: center;
+}

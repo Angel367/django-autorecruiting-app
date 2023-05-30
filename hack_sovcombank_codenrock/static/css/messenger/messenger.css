@@ -1,0 +1,97 @@
+.messenger-module{
+    background: #FEFEFE;
+    flex-grow: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    max-height: 600px;
+}
+.messenger-page{
+    overflow:scroll;
+    overflow-x:hidden;
+
+    min-width: 80%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+}
+
+.message-container {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.message-container.recipient {
+    justify-content: flex-start;
+}
+
+.message-bubble {
+    max-width: 60%;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.message-container.sender .message-bubble {
+    background: #007bff;
+}
+
+.message-container.recipient .message-bubble {
+    background: #6c757d;
+}
+
+.message-body {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.message-timestamp {
+    position: absolute;
+    font-size: 12px;
+    right: 10px;
+    bottom: 0;
+}
+
+.messenger-page::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+    background-color: #F7D7AE;
+}
+
+.messenger-page::-webkit-scrollbar-thumb {
+    background: #F5A07B;
+    position: absolute;
+    bottom: 0;
+}
+.messenger-header{
+    padding: 1em 2em;
+
+    text-align: center;
+    background:#B7DB84;
+}
+.messenger-module form{
+    background:#B7DB84;
+
+    padding: 1em 3em;
+    display: flex;
+    align-items: center;
+}
+.messenger-module form textarea{
+    flex-grow: 2;
+    background: #FEFEFE;
+    border-radius: 6px;
+    border: none;
+    padding: 1em 2em;
+}
+.messenger-module form button i{
+    font-size: 2em;
+}
+.vacancy-module form textarea::placeholder{
+    color: #C0C0C0;
+}

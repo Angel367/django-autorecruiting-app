@@ -1,0 +1,57 @@
+/*main{*/
+/*    align-items: center;*/
+/*     justify-content: center;*/
+/*}*/
+.main-module{
+    display:flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    align-items: center;
+    gap: 2em;
+    background: #FEFEFE;
+    padding: 1.5em 2em;
+    position: relative;
+    width: 800px;
+    flex-grow: 2;
+    //border-radius: 10px;
+    //margin:1.5em 2em;
+}
+.vacancy-info{
+    border-bottom: 3px solid #F5A07B;
+}
+.vacancy-desc dt,.vacancy-desc dd{
+     font-size: 1em;
+     padding: .3em;
+}
+.vacancy-desc dd{
+    margin-bottom: .7em;
+    margin-inline-start: 1.7em;
+    line-height: 1.1em;
+}
+.vacancy-header span{
+    font-size: 2em;
+    letter-spacing: 1px;
+    line-height: 1.3em;
+}
+.vacancy-header{
+    padding: .5em;
+
+}
+.vacancy-manage-panel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+.vacancy-manage-panel div{
+    font-size: 1em;
+    background: #F5A07B;
+    border-radius: 5px;
+    padding: 1em 2.4em;
+}
+.vacancy-desc{
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+}

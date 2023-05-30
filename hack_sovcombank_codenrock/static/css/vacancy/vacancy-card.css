@@ -1,0 +1,36 @@
+.vacancy-card-small{
+    background: #FBECD8;
+    border-radius: 6px;
+    position: relative;
+    padding: 1em 1.5em;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: .5em;
+}
+.archived{
+    background: #9f8e7d;
+}
+.vacancy-hr{
+    position: absolute;
+    top: 10%;
+    right: 5%;
+}
+.vacancy-info-small div {
+    padding: .3em 0;
+}
+.vacancy-info-small div span{
+    font-size: 1em;
+    margin: .3em 0;
+}
+.vacancy-header-small{
+    font-size: 1.8em;
+    padding: .8em 0;
+}
+ .vacancy-card-small a div{
+    background: #F5A07B;
+    border-radius: 5px;
+    border: none;
+    padding: .5em .8em;
+}
+

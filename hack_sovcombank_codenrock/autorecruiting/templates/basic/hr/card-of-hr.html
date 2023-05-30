@@ -1,0 +1,31 @@
+{% load static %}
+{% load custom_filters %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/candidate-cards.css' %}">
+<div class="card-of-candidate">
+    <div class="candidate-image-box">
+        {% load static %}
+        <img src="{% static 'img/candidate-photo.png' %}">
+    </div>
+    <div class="candidate-info">
+        <div class="candidate-name">{{ hr.user.first_name }} {{ hr.user.last_name }} {{ hr.user.patronymic }}</div>
+        <div class="candidate-age">
+            <span>Номер: </span>
+            <span>{{ hr.user.phone }}</span>
+        </div>
+        <div class="candidate-experience">
+            <span>Почта: </span>
+            <span>{{ hr.user.email }}</span>
+        </div>
+        <div class="hr-a">
+            <a href="/hr/{{ hr.id }}/own-vacancies">Посмотреть вакансии</a>
+        </div>
+    </div>
+
+        <div class="hr-a">
+            <a href="/hr/edit-by-id/{{ hr.user.id }}">Редактировать</a>
+        </div>
+        <div class="hr-a">
+            <a href="/hr/messenger">Написать</a>
+        </div>
+
+</div>

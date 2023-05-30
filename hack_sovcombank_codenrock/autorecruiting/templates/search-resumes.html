@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр резюме</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
+</head>
+<body>
+    {% for resume in resumes %}
+        {{ resume.first_name }}
+    {% endfor %}
+</body>
+</html>

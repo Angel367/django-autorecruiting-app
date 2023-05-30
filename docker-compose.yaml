@@ -1,0 +1,19 @@
+version: '3'
+services:
+  django:
+    build:
+      context: ./hack_sovcombank_codenrock
+      dockerfile: Dockerfile.django
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./hack_sovcombank_codenrock:/app
+
+  flask:
+    build:
+      context: ./hh-server
+      dockerfile: Dockerfile.flask
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./hh-server:/app

@@ -1,0 +1,45 @@
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vacancy/form.css' %}">
+<div class="vacancy-card">
+    <form class="panel-manage">
+
+    <div class="hr-info">
+        <label for="name">Имя:</label>
+        <input type="text" name="name" value="{{ hr.user.name }}">
+
+        <label for="surname">Фамилия:</label>
+        <input type="text" name="surname" value="{{ hr.user.last_name }}">
+
+        <label for="lastname">Отчество:</label>
+        <input type="text" name="lastname" value="{{ hr.user.patronymic }}">
+
+        <label for="email">Почта:</label>
+        <input type="email" name="email" value="{{ hr.user.email }}">
+
+        <label for="tel">Телефон:</label>
+        <input type="tel" name="tel" value="{{ hr.user.phone }}">
+
+        {% if hr.user.id == user.id %}
+        <label for="login">Логин:</label>
+        <input type="text" name="username" value="{{ hr.user.username }}">
+
+        <label for="password1">Пароль:</label>
+        <input type="password" name="password1">
+
+        <label for="password2">Подтверждение пароля:</label>
+        <input type="password" name="password2">
+        {% endif %}
+
+    </div>
+    <div class="buttons-holder">
+       <button type="submit">
+                <i class="fa fa-check" aria-hidden="true"></i>
+       </button>
+{#        {% if user.is_HRBP and user.id != hr.user.id %}#}
+{#        <button type="submit">#}
+{#            <i class="fa fa-archive" aria-hidden="true"></i>#}
+{#        </button>#}
+{#        {% endif %}#}
+    </div>
+    </form>
+</div>

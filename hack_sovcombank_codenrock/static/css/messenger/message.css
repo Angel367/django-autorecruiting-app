@@ -1,0 +1,19 @@
+.message {
+    background: #E5F5CF;
+    border-radius: 6px;
+    position: relative;
+    padding: 1em 1.2em;
+    text-align: justify;
+    max-width: fit-content;
+    min-height: 2em;
+
+}
+.message .message-time{
+    position: absolute;
+    bottom: 7%;
+    right: 3%;
+    font-size: .7em;
+}
+.message.from-me{
+    align-self: flex-end;
+}

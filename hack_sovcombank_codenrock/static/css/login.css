@@ -1,0 +1,44 @@
+#password, #username{
+    background: #F6FDEC;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: .5em 1em;
+    border: none;
+}
+.login-block, .login-block form{
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    background: #FFFFFF;
+    border-radius: 7px;
+    align-self: center;
+
+}
+.login-block{
+    padding: 1.5em 2em;
+}
+#password::placeholder, #username::placeholder {
+    color: #7B7B7B;
+    font-size: .8em;
+}
+main{
+    align-items: baseline;
+    justify-content: center;
+
+}
+body{
+    gap: 2em;
+}
+input[type=submit]{
+    background: #F5A07B;
+    border-radius: 5px;
+    padding: .5em 1.5em;
+    border: none;
+    align-self: center;
+
+}
+.login-header{
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: 400;
+}

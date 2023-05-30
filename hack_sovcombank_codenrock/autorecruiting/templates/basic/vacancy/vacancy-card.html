@@ -1,0 +1,43 @@
+{% load static %}
+{% load custom_filters %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/vacancy/vacancy-card.css' %}">
+{% if not vacancy.isArchived %}
+<div class="vacancy-card-small">
+{% else %}
+<div class="vacancy-card-small archived">
+{% endif %}
+    <div class="vacancy-info-small">
+        <div class="vacancy-header-small">
+                {{ vacancy.name }}
+        </div>
+        <div>
+            <span>Специальность:</span>
+            <span>{{ vacancy.speciality.specialityName}}</span>
+        </div>
+        <div>
+            <span>Локация:</span>
+            <span>{{ vacancy.city.cityName}}, {{ vacancy.city.country.countryName}}</span>
+        </div>
+        <div>
+            <span>Опыт работы:</span>
+            <span>{{ vacancy.workExperienceFrom }}-{{ vacancy.workExperienceTo|display_year_interval }}</span>
+        </div>
+        <div>
+            <span>Требования:</span>
+            <span>{{ vacancy.get_educationLevel_display}}</span>
+        </div>
+    </div>
+
+    {% if user.is_HRBP %}
+    <div class="vacancy-hr">
+        <span>
+            Назначен:
+        </span>
+        <span>
+           {{ vacancy.hR.user.username }}
+        </span>
+    </div>
+
+    {% endif %}
+    <a href="/vacancy-information/{{ vacancy.id }}"><div>Подробнее</div></a>
+</div>

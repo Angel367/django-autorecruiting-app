@@ -1,0 +1,33 @@
+footer {
+     background: #F7D7AE;
+     position: relative;
+     flex-shrink: 0;
+     display: flex;
+     padding: 1.2em 2em;
+     align-items: center;
+     justify-content: center;
+}
+
+footer div{
+     padding-bottom: 1em;
+     padding-top: 2em;
+     margin: 0;
+     display: flex;
+     gap: .9em
+}
+footer div i{
+     font-size: 2em;
+     color: #F5A07B;
+}
+footer::before{
+
+     content: '';
+     position: absolute;
+     top: 30%;
+     left:0;
+     right: 0;
+     height: 4px;
+     z-index: 1;
+     background: #F5A07B;
+}
+

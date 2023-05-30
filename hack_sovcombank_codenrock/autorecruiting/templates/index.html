@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
+     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+{% load static %}
+<link rel="shortcut icon"  href="{% static 'img/favicon.png' %}">
+<div class="back-img">
+<img src="{% static 'img/img.png' %}"></div>
+<header id="header">
+
+
+        <a href="/"><div>Главная страница</div></a>
+
+                <a href="/login"><div>Вход</div></a>
+
+    </div>
+</header>
+    <main>
+        <div class="on_page">
+<div class="header">Найди своего сотрудника</div>
+            <div class="text">Наш сервис - это ваш надежный помощник в мире трудоустройства.
+Мы создали удобную и эффективную платформу, на которой работодатели
+и соискатели могут найти друг друга.</div>
+        </div>
+        <div><a href="/login">Начать</a></div>
+        <div class="info">
+            <div>
+                Мы предоставляем вам инструменты для
+поиска вакансий по различным критериям
+и возможность создания
+ собственного профиля, в котором можно подробно описать свои
+навыки, опыт и образование.
+ Это увеличит ваши шансы
+найти идеальную работу.
+                </div>
+            <div>
+                <img src="{% static 'img/img_1.png' %}">
+            </div>
+        </div>
+    </main>
+    {% include "basic/footer.html" %}
+
+</body>
+</html>

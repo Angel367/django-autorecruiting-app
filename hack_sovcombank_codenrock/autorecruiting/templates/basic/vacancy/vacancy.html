@@ -1,0 +1,76 @@
+{% load custom_filters %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vacancy/vacancy.css' %}">
+{% if  vacancy.isArchived %}
+<div class="vacancy-card archived">
+    {% else %}
+<div class="vacancy-card">
+{% endif %}
+{#    TODO add city to vacancy#}
+    <div class="vacancy-info">
+        <div class="vacancy-header">
+            <span>
+                Вакансия № {{ vacancy.id }}:
+            </span>
+            <span>
+                {{ vacancy.name }}
+            </span>
+        </div>
+        <dl class="vacancy-desc">
+            <dt>Локация:</dt>
+            <dd>{{ vacancy.city.cityName}}, {{ vacancy.city.country.countryName}}</dd>
+
+            <dt>Специальность:</dt>
+            <dd>{{ vacancy.speciality.specialityName}}</dd>
+
+            <dt>Задачи:</dt>
+            <dd>
+                {{ vacancy.get_workSchedule_display }}
+            </dd>
+            <dt>Требования:</dt>
+            <dd>
+                {{ vacancy.get_educationLevel_display}}; опыт работы от {{ vacancy.workExperienceFrom|display_months }} до {{ vacancy.workExperienceTo|display_months }}.
+            </dd>
+            <dt>Условия:</dt>
+            <dd>
+                {{ vacancy.get_employmentType_display }}, зарплата от {{ vacancy.suggestedSalaryFrom }}руб до {{ vacancy.suggestedSalaryTo }}руб.
+            </dd>
+            <dt>Описание:</dt>
+            <dd>
+                 {{ vacancy.vacancyDescription }}
+            </dd>
+        </dl>
+        {% if user.is_HRBP %}
+            <div>
+                <span>
+                    Назначен:
+                </span>
+                <span>
+                    {{ vacancy.hR.user.username }}
+                </span>
+            </div>
+        {% endif %}
+    {% if  vacancy.isArchived %}
+        <div>
+        В архиве
+        </div>
+    {% endif %}
+
+
+    </div>
+    <div class="vacancy-manage-panel">
+        {% if not vacancy.isArchived %}
+            <a href="/candidates-by-vacancy-id/{{ vacancy.id }}" ><div>Подбор кандидата</div></a>
+
+
+    {% endif %}
+{#        TODO add statistic page#}
+        <a href="/hr/statistics/"><div>Статистика</div></a>
+        <a  href="/edit-vacancy/{{ vacancy.id }}"><div>Редактировать</div></a>
+
+
+
+
+
+    </div>
+</div>

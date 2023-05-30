@@ -1,0 +1,36 @@
+{% load static %}
+<link rel="shortcut icon"  href="{% static 'img/favicon.png' %}">
+<header id="header">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+    <div id="logo">
+        <a href="/">{% load static %}
+        <img width="30px" src="{% static 'img/logo.png' %}"></a>
+    </div>
+    <nav class = "menu">
+    {% if not user.is_authenticated %}
+        <a href="/"><div>Главная страница</div></a>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <a href="/hr/vacancies"><div>Вакансии</div></a>
+        <a href="/candidates"><div>Подбор кандидата</div></a>
+        <a href="/hr/statistics/"><div>Статистика</div></a>
+        {% if user.is_HRBP %}
+            <a href="/hr/all"><div>Список всех hr</div></a>
+        {% else %}
+        <a href="/hr/messenger"><div>Заказчик</div></a>
+
+
+            <a href="/hr/messenger"><div>HRBP</div></a>
+        {% endif %}
+{% endif %}
+    </nav>
+    <div class="login-signup">
+        {% if user.is_authenticated %}
+                <div><a href="/logout">Выход</a></div>
+            {% else %}
+                <div><a href="/login">Вход</a></div>
+{#                <div><a href="/signup">Регистрация</a></div>#}
+            {% endif %}
+    </div>
+</header>

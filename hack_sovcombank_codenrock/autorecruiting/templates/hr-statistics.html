@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
+</head>
+<body>
+    {%  include "basic/header.html" %}
+    <main>
+        {% include "basic/hr/profile-panel.html" %}
+        <img src="data:image/png;base64,{{ plot_data }}" alt="Pie Chart">
+    </main>
+    {% include "basic/footer.html" %}
+</body>
+</html>

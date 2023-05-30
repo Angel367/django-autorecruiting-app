@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вакансии</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
+</head>
+<body>
+    {%  include "basic/header.html" %}
+    <main>
+        {% include "basic/hr/profile-panel.html" %}
+        {% include "basic/vacancy/list-of-vacancies.html" %}
+    </main>
+    {% include "basic/footer.html" %}
+</body>
+</html>

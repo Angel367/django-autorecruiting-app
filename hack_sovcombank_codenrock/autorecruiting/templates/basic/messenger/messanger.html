@@ -1,0 +1,33 @@
+    <script src="https://kit.fontawesome.com/98db032af2.js" crossorigin="anonymous"></script>
+{% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/messenger/messenger.css' %}">
+<div class="messenger-module" id="messenger-module">
+
+    <div class="messenger-header">
+        АДРЕСАТ
+    </div>
+    <div class="messenger-page" id="messenger_page">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/messenger/message.css' %}">
+        {% include 'basic/messenger/message-from-me.html'%}
+        {% include 'basic/messenger/message-from-me.html'%}
+        {% include 'basic/messenger/message-to-me.html'%}
+        {% include 'basic/messenger/message-from-me.html'%}
+        {% include 'basic/messenger/message-to-me.html'%}
+        {% include 'basic/messenger/message-to-me.html'%}
+        {% include 'basic/messenger/message-to-me.html'%}
+        {% include 'basic/messenger/message-from-me.html'%}
+        {% include 'basic/messenger/message-from-me.html'%}
+        {% include 'basic/messenger/message-from-me.html'%}
+    </div>
+    <form>
+        <textarea placeholder="Введите сообщение..."  ></textarea>
+        <button type="submit">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+        </button>
+    </form>
+</div>
+    <script>
+        let messenger_page = document.getElementById('messenger_page');
+        messenger_page.scrollTop = messenger_page.scrollHeight;
+   </script>

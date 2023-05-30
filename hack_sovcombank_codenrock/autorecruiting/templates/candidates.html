@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр кандидатов</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/basic.css' %}">
+</head>
+<body>
+    {%  include "basic/header.html" %}
+    <main>
+    {% include "basic/vacancy/filter-sort-vacancy.html" %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/candidate-cards.css' %}">
+    <div class="card-box">
+        {% for candidate in candidates %}
+            {%  include "basic/candidate/card-of-candidate.html" with candidate=candidate custom_filters=custom_filters %}
+        {% endfor %}
+
+    </div>
+    </main>
+    {% include "basic/footer.html" %}
+</body>
+</html>

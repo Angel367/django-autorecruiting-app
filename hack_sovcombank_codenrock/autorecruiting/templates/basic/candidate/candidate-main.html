@@ -1,0 +1,117 @@
+{% load static %}
+{% load custom_filters %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/candidate-main.css' %}">
+<div class="main-module">
+{% include 'basic/vacancy/vacancy-card.html' with vacancy=candidate.vacancy %}
+    <div class="main-info">
+        <div class="vacancy-header">
+            <span>
+                ФИО:
+            </span>
+            <span>
+                {{ candidate.name }} {{ candidate.surname }} {{ candidate.patronymic }}
+            </span>
+        </div>
+        <div class="vacancy-desc">
+            <dl>
+                <dt>Статус кандидата</dt>
+                <dd>
+                    {{ candidate.get_status_display }}
+                </dd>
+                <dt>Почта</dt>
+                <dd>
+                    {{ candidate.email }}
+                </dd>
+                <dt>Номер</dt>
+                <dd>
+                    {{ candidate.phone }}
+                </dd>
+                <dt>Дата рождения</dt>
+                <dd>
+                    {{ candidate.birthdayDate|display_age }}
+                </dd>
+                <dt>Образование</dt>
+                <dd>
+                    {{ candidate.get_educationLevel_display }}
+                </dd>
+                <dt>Опыт работы</dt>
+                <dd>
+                    {{ candidate.workExperienceDuration|display_months }}
+                </dd>
+                <dt>Готовность к переезду</dt>
+                <dd>
+                    {% if candidate.relocationReady == True %}Да
+                    {% else %}Нет
+                    {% endif %}
+                </dd>
+                <dt> Ожидаемая зарплата
+                </dt>
+                <dd>
+                    {{ candidate.expectedSalaryFrom }} - {{ candidate.expectedSalaryTo }}
+                </dd>
+
+            </dl>
+            <a download href="{{ candidate.resumeLink }}">Скачать резюме</a>
+        </div>
+
+
+    </div>
+    <form class="vacancy-manage-panel" method="post" id="form1">
+    {% csrf_token %}
+        <div>
+            <label>Изменить статус</label>
+            <select name="status">
+                {% if vacancy %}
+                    <option value="{{ candidate.status }}">{{ candidate.get_status_display }}</option>
+                {% endif %}
+                {% for e in CANDIDATE_STATUS_CHOICES %}
+                    {% if e != candidate.status %}
+                        {% if e == 0 %}
+                            <option value={{ e }}>Выбран</option>
+                        {% elif e == 1 %}
+                            <option value={{ e }}>Тестовое задание выслано</option>
+                        {% elif e == 2 %}
+                            <option value={{ e }}>Тестовое задание на проверке</option>
+                        {% elif e == 3 %}
+                            <option value={{ e }}>Тестовое задание принято</option>
+                        {% elif e == 4 %}
+                            <option value={{ e }}>Интервью назначено</option>
+                        {% elif e == 5 %}
+                            <option value={{ e }}>Принят на работу</option>
+                        {% elif e == 6 %}
+                            <option value={{ e }}>Не прошёл собеседование</option>
+                        {% elif e == 7 %}
+                            <option value={{ e }}>Не выбран</option>
+                        {% elif e == 8 %}
+                            <option value={{ e }}>Выслан оффер</option>
+                        {% else %}
+                            <option value={{ e }}>Не прошёл собеседование</option>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit" name="save" id="save">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+            </button>
+        </div>
+    </form>
+
+    <form method="POST" id="form2" class="vacancy-manage-panel">
+        {% csrf_token %}
+        <div>
+            <label>Назначить интервью</label><br>
+            <label for="id_interviewDate">Дата интервью:</label>
+            <input type="date" name="interviewDate" id="id_interviewDate" required value="
+                    {% if candidate.get_interview_date != "1970-01-01" %}{{ candidate.get_interview_date }}{% endif %}"><br>
+
+            <label for="id_interviewerFullName">ФИО интервьюера:</label>
+            <input type="text" name="interviewerFullName" id="id_interviewerFullName" required value="
+                    {% if candidate.interviewerFullName != "Интервьюер Петров" %}{{ candidate.interviewerFullName }}{% endif %}">
+            <button type="submit" name="save_interview" id="save_interview">
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </button>
+        </div>
+    </form>
+
+</div>

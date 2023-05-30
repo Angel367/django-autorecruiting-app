@@ -1,0 +1,20 @@
+header{
+     background: #F7D7AE;
+     position: sticky;
+     top:0;
+     z-index: 1;
+     display: flex;
+     padding: 1.2em 2em;
+     align-items: center;
+     justify-content: space-between;
+     border-bottom: solid #F5A07B;
+}
+
+header nav, header .login-signup{
+     display: flex;
+}
+header nav a, header .login-signup a{
+     padding: 1em 2em;
+     text-decoration: none;
+}
+

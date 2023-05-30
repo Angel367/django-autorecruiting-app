@@ -1,0 +1,17 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/vacancy/list-of-vacancies.css' %}">
+<script src="https://kit.fontawesome.com/98db032af2.js" crossorigin="anonymous"></script>
+<div class="vacancy-module">
+
+    <form>
+        <input type="text" placeholder="Поиск по ФИО">
+        <a><button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button></a>
+        <a href="/hr/add/"><div>Добавить hr</div></a>
+    </form>
+    <div class="hr-list">
+        {% for hr in hrs %}
+            {%  include "basic/hr/card-of-hr.html"  with hr=hr %}
+        {% endfor %}
+    </div>
+
+</div>

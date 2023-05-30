@@ -1,0 +1,183 @@
+{% load custom_filters %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vacancy/form.css' %}">
+
+{% if  vacancy.isArchived %}
+<div class="vacancy-card archived">
+    {% else %}
+<div class="vacancy-card">
+{% endif %}
+    <form class="panel-manage" method="post" action="/vacancy-edit-add/">
+    {% csrf_token %}
+    <div class="vacancy-info">
+{#    TODO add city to vacancy#}
+            <div class="vacancy-header">
+                <label for="vacancy-name">Вакансия № {{ vacancy.id }}:</label>
+                <input type="text" name="name" value="{{ vacancy.name }}">
+                <input name="id" type="text" value="{{ vacancy.id }}" hidden>
+           </div>
+        <div class="vacancy-desc">
+            <label for="vacancy-desc">Описание</label>
+            <textarea name="vacancyDescription">{{ vacancy.vacancyDescription }}</textarea>
+
+            <div>
+                <label>Зарплата от </label>
+                <input type="number" value="{{ vacancy.suggestedSalaryFrom }}" name="suggestedSalaryFrom">
+                <label> до </label>
+                <input type="number" value="{{ vacancy.suggestedSalaryTo }}" name="suggestedSalaryTo">
+            </div>
+
+            <div>
+                <label>Опыт работы от </label>
+                <input type="number" value="{{ vacancy.workExperienceFrom }}" name="workExperienceFrom">
+                <label> до </label>
+                <input type="number" value="{{ vacancy.workExperienceTo }}" name="workExperienceTo">
+            </div>
+            <div>
+                <label>Образование</label>
+                <select name="educationLevel">
+                    {% if vacancy %}
+                        <option value="{{ vacancy.educationLevel }}">{{ vacancy.get_educationLevel_display }}</option>
+                        {% endif %}
+                        {% for e in EDUCATION_CHOICES %}
+                            {% if e != vacancy.educationLevel %}
+                                {% if e == 0 %}
+                                    <option value={{ e }}>Основное общее</option>
+                                {% elif e == 1%}
+                                    <option value={{ e }}>Среднее общее</option>
+                                    {% elif e == 2%}
+                                    <option value={{ e }}>Среднее профессиональное</option>
+                                    {% elif e == 3%}
+                                    <option value={{ e }}>Неоконченное высшее</option>
+                                    {% elif e == 4%}
+                                    <option value={{ e }}>Бакалавр</option>
+                                 {% else %}
+                                    <option value={{ e }}>Магистр</option>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                </select>
+            </div>
+
+             <div>
+                <label>График работы</label>
+                <select name="workSchedule">
+                    {% if vacancy %}
+                        <option value="{{ vacancy.workSchedule }}">{{ vacancy.get_workSchedule_display }}</option>
+                        {% endif %}
+                        {% for e in WORK_SCHEDULE_CHOICES %}
+                            {% if e != vacancy.workSchedule %}
+                                {% if e == 0 %}
+                                    <option value={{ e }}>Полный день</option>
+                                {% elif e == 1%}
+                                    <option value={{ e }}>Удалённая работа</option>
+                                 {% else %}
+                                    <option value={{ e }}>Гибкий график</option>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                </select>
+            </div>
+             <div>
+                    <label>Тип занятости</label>
+                    <select name="employmentType">
+                        {% if vacancy %}
+                        <option value="{{ vacancy.employmentType }}">{{ vacancy.get_employmentType_display }}</option>
+                        {% endif %}
+                        {% for e in EMPLOYMENT_TYPE_CHOICES %}
+                            {% if e != vacancy.employmentType %}
+                                {% if e == 0 %}
+                                    <option value={{ e }}>Полная занятость</option>
+                                {% elif e == 1%}
+                                    <option value={{ e }}>Стажировка</option>
+                                 {% else %}
+                                    <option value={{ e }}>Частичная занятость</option>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+{#                <div>#}
+{#                    <label>Страна</label>#}
+{#                    <select name="country">#}
+{#                        {% if vacancy %}#}
+{#                        <option value="{{ vacancy.city.country.countryName }}">{{ vacancy.city.country.countryName }}</option>#}
+{#                        {% endif %}#}
+{#                        {% for country in countries %}#}
+{#                            {% if country.id != vacancy.city.country_id %}#}
+{#                            <option value={{ country.id }}>{{ country.countryName }}</option>#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
+{##}
+{#                    </select>#}
+{#                </div>#}
+                <div>
+                    <label>Локация</label>
+                    <select name="city">
+                        {% if vacancy %}
+                        <option value="{{ vacancy.city.id }}">{{ vacancy.city.cityName }}, {{ vacancy.city.country.countryName }} </option>
+                        {% endif %}
+                        {% for city in cities %}
+                            {% if city.id != vacancy.city.id %}
+                            <option value={{ city.id }}>{{ city.cityName }}, {{ city.country.countryName }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            <div>
+                    <label>Специальность</label>
+                    <select name="speciality">
+                        {% if vacancy %}
+                        <option value="{{ vacancy.speciality.id }}">{{ vacancy.speciality.specialityName }}</option>
+                        {% endif %}
+                        {% for speciality in specialities%}
+                            {% if speciality.id != vacancy.speciality.id %}
+                            <option value={{ speciality.id }}>{{ speciality.specialityName }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+            <div>
+                {% if user.is_HRBP and hrs %}
+                    <label for="select-hr">Назначить hr</label>
+
+                    <select name="hR">
+                       {% if vacancy.hR %}
+                           <option value="{{ vacancy.hR.id }}">{{vacancy.hR.user.username}}</option>
+                        {% else %}
+                           <option value="">Назначить hr</option>
+                        {% endif %}
+
+                        {% for hr in hrs %}
+                            {% if vacancy.hR.id != hr.id %}
+                            <option value={{ hr.id }}>{{ hr.user.username }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                {% endif %}
+            </div>
+        </div>
+
+
+    </div>
+    <div class="buttons-holder">
+       {% if  vacancy.isArchived %}
+<button type="submit" name="archive_out">
+                Вернуть из архива
+       </button>
+    {% else %}
+    <button type="submit" name="save" id="save">
+                <i class="fa fa-check" aria-hidden="true"></i>
+       </button>
+        <button type="submit" name="archive_into">
+            <i class="fa fa-archive" aria-hidden="true"></i>
+        </button>
+{% endif %}
+
+    </div>
+    </form>
+</div>
