@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hack_sovcombank_codenrock.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django-autorecruiting-app.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -1,5 +1,5 @@
 """
-ASGI config for hack_sovcombank_codenrock project.
+ASGI config for django-autorecruiting-app project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -13,7 +13,7 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import *
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hack_sovcombank_codenrock.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django-autorecruiting-app.settings')
 
 application = get_asgi_application()
 

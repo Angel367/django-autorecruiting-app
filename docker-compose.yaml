@@ -2,12 +2,12 @@ version: '3'
 services:
   django:
     build:
-      context: ./hack_sovcombank_codenrock
+      context: ./django-autorecruiting-app
       dockerfile: Dockerfile.django
     ports:
       - "8000:8000"
     volumes:
-      - ./hack_sovcombank_codenrock:/app
+      - ./django-autorecruiting-app:/app
 
   flask:
     build:
