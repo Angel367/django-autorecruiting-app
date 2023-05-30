@@ -3,7 +3,7 @@ REM Activate the virtual environment
 call venv\Scripts\activate.bat
 
 REM Change to the Django project directory
-cd hack_sovcombank_codenrock
+cd django-autorecruiting-app
 
 REM Clear the database
 python manage.py migrate autorecruiting zero
