@@ -11,6 +11,9 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import redirect
 from django.shortcuts import render
 from .test_data_create import on_start_function
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+# from .models import MessageModel
 
 from .models import *
 
@@ -132,7 +135,7 @@ def candidate_information_main(request, id):
     return render(request, 'candidate-information-main.html', context=context)
 
 
-def candidate_information(request):
+def candidate_information(request):  # TODO Что за HTMl?
     return render(request, 'candidate-information.html', {'messages': get_user_messages_json("arinka", "asdfwe")})
 
 
@@ -203,16 +206,19 @@ def hr_messenger(request):
 # TODO Аделина сделай нормальный css и html для этой страницы спасибо большое
 @login_required
 def hr_statistics(request):
-    user = request.user
-    if user.is_HR:
-        target_hr = HR.objects.get(user_id=user.id)
-    elif user.is_HRBP:
-        target_hr = HRBP.objects.get(user_id=user.id)
+    custom_request_user = CustomUser()
+    custom_request_user.__dict__ = request.user.__dict__
+    if custom_request_user.is_HR:
+        target_hr = HR.objects.get(user_id=custom_request_user.id)
+    elif custom_request_user.is_HRBP:
+        target_hr = HRBP.objects.get(user_id=custom_request_user.id)
+    else:
+        return HttpResponseForbidden
     all_candidates_with_status, labels = [], []
     for i in range(len(CANDIDATE_STATUS_CHOICES)):
-        if user.is_HR:
+        if custom_request_user.is_HR:
             all_candidates_with_status.append(Candidate.objects.filter(vacancy__hR=target_hr, status=i).count())
-        elif user.is_HRBP:
+        elif custom_request_user.is_HRBP:
             all_candidates_with_status.append(Candidate.objects.filter(vacancy__hR__hRBP=target_hr, status=i).count())
         labels.append(CANDIDATE_STATUS_CHOICES[i][1])
     print(all_candidates_with_status)
@@ -238,6 +244,9 @@ def hr_statistics(request):
 
 @login_required
 def vacancy_edit_add(request):
+    custom_request_user = CustomUser()
+    custom_request_user.__dict__ = request.user.__dict__
+    vacancy = None
     if 'save' in request.POST:
         if not request.POST.get('id'):
             vacancy = Vacancy(name=request.POST.get('name'),
@@ -252,18 +261,18 @@ def vacancy_edit_add(request):
                               city_id=request.POST.get('city'),
                               speciality_id=request.POST.get('speciality')
                               )
-            if request.user.is_HRBP:
+            if custom_request_user.is_HRBP:
                 vacancy.hRBP = HRBP.objects.get(user_id=request.user.id)
                 if request.POST.get('hR') != '':
                     vacancy.hR = HR.objects.get(id=request.POST.get('hR'))
             else:
                 vacancy.hR = HR.objects.get(user_id=request.user.id)
-                vacancy.hRBP = HRBP.objects.get(id=request.user.hr.hRBP_id)
+                vacancy.hRBP = HRBP.objects.get(id=custom_request_user.hr.hRBP_id)  # TODO Что за поле hr?
         else:
             vacancy = Vacancy.objects.get(id=request.POST.get('id'))
             vacancy.name = request.POST.get('name')
             vacancy.city_id = request.POST.get('city')
-            if request.user.is_HRBP and request.POST.get('hR') != '':
+            if custom_request_user.is_HRBP and request.POST.get('hR') != '':
                 vacancy.hR = HR.objects.get(id=request.POST.get('hR'))
             vacancy.employmentType = request.POST.get('employmentType')
             vacancy.speciality_id = request.POST.get('speciality')
@@ -288,6 +297,8 @@ def vacancy_edit_add(request):
 
 @login_required
 def edit_vacancy(request, id):
+    custom_request_user = CustomUser()
+    custom_request_user.__dict__ = request.user.__dict__
     context = {
         'EMPLOYMENT_TYPE_CHOICES': dict(EMPLOYMENT_TYPE_CHOICES),
         'EDUCATION_CHOICES': dict(EDUCATION_CHOICES),
@@ -296,13 +307,15 @@ def edit_vacancy(request, id):
         'vacancy': Vacancy.objects.get(id=id),
         'specialities': Speciality.objects.all()
     }
-    if request.user.is_HRBP:
+    if custom_request_user.is_HRBP:
         context.update({'hrs': HRBP.objects.get(user_id=request.user.id).hr_set.all()})
     return render(request, 'vacancy-edit-or-add.html', context=context)
 
 
 @login_required
 def add_vacancy(request):
+    custom_request_user = CustomUser()
+    custom_request_user.__dict__ = request.user.__dict__
     context = {
         'EMPLOYMENT_TYPE_CHOICES': dict(EMPLOYMENT_TYPE_CHOICES),
         'EDUCATION_CHOICES': dict(EDUCATION_CHOICES),
@@ -310,7 +323,7 @@ def add_vacancy(request):
         'cities': City.objects.all().order_by('country_id'),
         'specialities': Speciality.objects.all()
     }
-    if request.user.is_HRBP:
+    if custom_request_user.is_HRBP:
         context.update({'hrs': HRBP.objects.get(user_id=request.user.id).hr_set.all()})
     return render(request, 'vacancy-edit-or-add.html', context=context)
 
@@ -334,7 +347,9 @@ def hr_edit_add(request):
 #  arg user.id
 @login_required
 def edit_hr_by_id(request, id):
-    if request.user.is_HR:
+    custom_request_user = CustomUser()
+    custom_request_user.__dict__ = request.user.__dict__
+    if custom_request_user.is_HR:
         hr = HR.objects.get(user_id=request.user.id)
     else:
         if request.user.id == id:
@@ -391,8 +406,12 @@ def vacancy_information(request, id):
 
 
 def message_list(request):
-    if request.user.is_HR:
-        recipient = request.user.hr.hRBP
+    custom_request_user = CustomUser()
+    custom_request_user.__dict__ = request.user.__dict__
+    if custom_request_user.is_HR:
+        recipient = custom_request_user.hr.hRBP  # TODO что это?
+    else:
+        pass  # TODO what else?
     messages = MessageModel.objects.filter(user=request.user, recipient=recipient)
     return render(request, 'hr-messenger.html', {'messages': messages, 'recipient': recipient})
 
@@ -435,12 +454,6 @@ def get_user(username):
         return user
     except ObjectDoesNotExist:
         return JsonResponse({'error': 'User not found.'}, status=404)
-
-
-from django.http import JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
-
-from .models import MessageModel
 
 
 def get_user_messages(request, username):
@@ -491,6 +504,10 @@ def get_user_messages_json(username, recipient):
         })
     message_list.reverse()
     return message_list
+
+
+def send_message_test(request):
+    pass
 
 
 def login_view(request):
