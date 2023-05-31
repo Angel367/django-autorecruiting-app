@@ -1,0 +1,16 @@
+source /root/.virtualenvs/django-autorecruiting-app/bin/activate
+
+cd /root/django-autorecruiting-app-SYNC/django-autorecruiting-app
+python manage.py migrate autorecruiting zero
+autorecruiting/migrations
+
+python manage.py migrate autorecruiting zero
+cd autorecruiting/migrations
+rm -rf *
+cd ../..
+rm db.sqlite3
+
+python manage.py makemigrations
+python manage.py makemigrations autorecruiting
+python manage.py migrate
+python manage.py migrate autorecruiting

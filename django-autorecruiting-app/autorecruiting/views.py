@@ -507,7 +507,18 @@ def get_user_messages_json(username, recipient):
 
 
 def send_message_test(request):
-    pass
+    text = "3"
+    token = "6293682583:AAFix7d2pbBcvjh2nTnlhMZaeptTqUCa8g0"
+    chat_id = "0"
+    url_req = "https://api.telegram.org/bot"+token+"/messages/getHistory"
+    results = requests.get(url_req).json()
+
+    if results['ok']:
+        for result in results['result']:
+            print(result)
+    else:
+        print('Error occurred:', results['description'])
+    return HttpResponseRedirect('/')
 
 
 def login_view(request):
