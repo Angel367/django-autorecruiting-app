@@ -46,5 +46,6 @@ urlpatterns = [
     # path('create_user/', views.create_user, name='create_user'),
     path('get_user/<str:username>', views.get_user, name='get_user'),
     # path('user_messages/<str:username>/', views.get_user_messages, name='user_messages'),
+    path('send_message_test', views.send_message_test, name='send_message_test')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
