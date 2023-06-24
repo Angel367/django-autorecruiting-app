@@ -2,7 +2,7 @@ import base64
 import io
 import json
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import requests
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -206,46 +206,46 @@ def hr_messenger(request):
 # TODO Аделина сделай нормальный css и html для этой страницы спасибо большое
 @login_required
 def hr_statistics(request):
-    custom_request_user = CustomUser()
-    custom_request_user.__dict__ = request.user.__dict__
-    if custom_request_user.is_HR:
-        target_hr = HR.objects.get(user_id=custom_request_user.id)
-    elif custom_request_user.is_HRBP:
-        target_hr = HRBP.objects.get(user_id=custom_request_user.id)
-    else:
-        return HttpResponseForbidden
-    all_candidates_with_status, labels = [], []
-    for i in range(len(CANDIDATE_STATUS_CHOICES)):
-        if custom_request_user.is_HR:
-            all_candidates_with_status.append(Candidate.objects.filter(vacancy__hR=target_hr, status=i).count())
-        elif custom_request_user.is_HRBP:
-            all_candidates_with_status.append(Candidate.objects.filter(vacancy__hR__hRBP=target_hr, status=i).count())
-        labels.append(CANDIDATE_STATUS_CHOICES[i][1])
-    print(all_candidates_with_status)
-    plt.pie(all_candidates_with_status, labels=labels, autopct='%1.1f%%')
-    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    plt.tight_layout()
+    # custom_request_user = CustomUser.objects.get(id=request.user.id)
 
-    image_stream = io.BytesIO()
-    plt.savefig(image_stream, format='png')
-    image_stream.seek(0)
-    plot_data = base64.b64encode(image_stream.getvalue()).decode()
-    plt.close()
-    # plt.show()
-
-    Candidate.objects.filter()
-
-    context = {
-        'user': request.user,
-        'plot_data': plot_data
-    }
-    return render(request, 'hr-statistics.html', context=context)
+    # if custom_request_user.is_HR:
+    #     target_hr = HR.objects.get(user_id=custom_request_user.id)
+    # elif custom_request_user.is_HRBP:
+    #     target_hr = HRBP.objects.get(user_id=custom_request_user.id)
+    # else:
+    #     return HttpResponseForbidden
+    # all_candidates_with_status, labels = [], []
+    # for i in range(len(CANDIDATE_STATUS_CHOICES)):
+    #     if custom_request_user.is_HR:
+    #         all_candidates_with_status.append(Candidate.objects.filter(vacancy__hR=target_hr, status=i).count())
+    #     elif custom_request_user.is_HRBP:
+    #         all_candidates_with_status.append(Candidate.objects.filter(vacancy__hR__hRBP=target_hr, status=i).count())
+    #     labels.append(CANDIDATE_STATUS_CHOICES[i][1])
+    # print(all_candidates_with_status)
+    # plt.pie(all_candidates_with_status, labels=labels, autopct='%1.1f%%')
+    # plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    # plt.tight_layout()
+    #
+    # image_stream = io.BytesIO()
+    # plt.savefig(image_stream, format='png')
+    # image_stream.seek(0)
+    # plot_data = base64.b64encode(image_stream.getvalue()).decode()
+    # plt.close()
+    # # plt.show()
+    #
+    # Candidate.objects.filter()
+    #
+    # context = {
+    #     'user': request.user,
+    #     'plot_data': plot_data
+    # }
+    return render(request, 'hr-statistics.html', )  # context=context
 
 
 @login_required
 def vacancy_edit_add(request):
-    custom_request_user = CustomUser()
-    custom_request_user.__dict__ = request.user.__dict__
+    custom_request_user = CustomUser.objects.get(id=request.user.id)
+
     vacancy = None
     if 'save' in request.POST:
         if not request.POST.get('id'):
@@ -297,8 +297,7 @@ def vacancy_edit_add(request):
 
 @login_required
 def edit_vacancy(request, id):
-    custom_request_user = CustomUser()
-    custom_request_user.__dict__ = request.user.__dict__
+    custom_request_user = CustomUser.objects.get(id=request.user.id)
     context = {
         'EMPLOYMENT_TYPE_CHOICES': dict(EMPLOYMENT_TYPE_CHOICES),
         'EDUCATION_CHOICES': dict(EDUCATION_CHOICES),
@@ -314,8 +313,8 @@ def edit_vacancy(request, id):
 
 @login_required
 def add_vacancy(request):
-    custom_request_user = CustomUser()
-    custom_request_user.__dict__ = request.user.__dict__
+    custom_request_user = CustomUser.objects.get(id=request.user.id)
+
     context = {
         'EMPLOYMENT_TYPE_CHOICES': dict(EMPLOYMENT_TYPE_CHOICES),
         'EDUCATION_CHOICES': dict(EDUCATION_CHOICES),
@@ -347,8 +346,8 @@ def hr_edit_add(request):
 #  arg user.id
 @login_required
 def edit_hr_by_id(request, id):
-    custom_request_user = CustomUser()
-    custom_request_user.__dict__ = request.user.__dict__
+    custom_request_user = CustomUser.objects.get(id=request.user.id)
+
     if custom_request_user.is_HR:
         hr = HR.objects.get(user_id=request.user.id)
     else:
@@ -406,8 +405,8 @@ def vacancy_information(request, id):
 
 
 def message_list(request):
-    custom_request_user = CustomUser()
-    custom_request_user.__dict__ = request.user.__dict__
+    custom_request_user = CustomUser.objects.get(id=request.user.id)
+
     if custom_request_user.is_HR:
         recipient = custom_request_user.hr.hRBP  # TODO что это?
     else:
