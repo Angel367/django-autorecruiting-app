@@ -17,7 +17,7 @@ urlpatterns = [
     path('candidates-by-vacancy-id/<int:id>', views.candidates_by_vacancy_id, name='candidates-by-vacancy-id'),
     path('add-vacancy/', views.add_vacancy, name='add-vacancy'),
     path('edit-vacancy/<int:id>', views.edit_vacancy, name='edit-vacancy'),
-    path('search-resumes/', views.search_resumes, name='search-resumes'),
+    # path('search-resumes/', views.search_resumes, name='search-resumes'),
     path('vacancy-edit-add/', views.vacancy_edit_add, name='add-edit-post-vacancy'),
 
     path('hr-edit-add/', views.hr_edit_add, name='add-edit-post-hr'),
@@ -31,21 +31,11 @@ urlpatterns = [
 
     path('hr/<int:id>/own-vacancies/', views.hr_own_vacancies, name='hr-by-id-own-vacancies'),
     path('hr/statistics/', views.hr_statistics, name='hr-statistics'),
-    path('hr/messenger/', views.hr_messenger, name='hr-messenger'),
+    # path('hr/messenger/', views.hr_messenger, name='hr-messenger'),
     path('vacancy-information/<int:id>', views.vacancy_information, name='vacancy-information'),
-    # path('hr/messenger/hrbp', views.hr_vacancies, name='hr-messenger-hrbp'),
-    # path('hr/messenger/employer', views.hr_vacancies, name='hr-messenger-employer'),
-    # path('hr/messenger/hrbp-to-hrs', views.hr_vacancies, name='hrs-messenger-hrbp'),
-    # messenger
-    # path('send_message/', views.send_message, name='send_message'),
-    # path('get_messages/<int:user_id>/<int:recipient_id>/', views.get_messages, name='get_messages'),
+    path('hr/messenger/hr/<int:id>', views.hr_messenger_to_hrbp, name='hr-messenger-hrbp'),
+    path('hr/messenger/customer/<int:id>', views.hr_messenger_to_customer, name='hr-messenger-customer'),
+    path('hr/messenger/candidate/<int:id>', views.hr_messenger_to_candidate, name='hrs-messenger-candidate'),
 
-    path('messages/', views.message_list, name='message_list'),
-    # path('register/', views.register_page, name='register_page'),
-    path('send_message/', views.send_message, name='send_message'),
-    # path('create_user/', views.create_user, name='create_user'),
-    path('get_user/<str:username>', views.get_user, name='get_user'),
-    # path('user_messages/<str:username>/', views.get_user_messages, name='user_messages'),
-    path('send_message_test', views.send_message_test, name='send_message_test')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -17,11 +17,12 @@
         <a href="/hr/statistics/"><div>Статистика</div></a>
         {% if user.is_HRBP %}
             <a href="/hr/all"><div>Список всех hr</div></a>
+            <a href="/hr/messenger/customer/{{ user.hrbp.customer.id }}"><div>Заказчик</div></a>
         {% else %}
-        <a href="/hr/messenger"><div>Заказчик</div></a>
 
 
-            <a href="/hr/messenger"><div>HRBP</div></a>
+
+            <a href="/hr/messenger/hr/{{ user.hr.hRBP.id }}"><div>HRBP</div></a>
         {% endif %}
 {% endif %}
     </nav>

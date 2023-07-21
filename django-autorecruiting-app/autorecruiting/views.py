@@ -1,7 +1,7 @@
 import base64
 import io
 import json
-
+from django.core.mail import send_mail
 # import matplotlib.pyplot as plt
 import requests
 from django.contrib.auth import authenticate, login
@@ -25,7 +25,7 @@ def index(request):
 @login_required
 def candidates(request):
     context = {
-        'candidates': Candidate.objects.all(),
+        'candidates': Candidate.objects.all()[:15],
         'cities': City.objects.all(),
         'specialities': Speciality.objects.all(),
         'vacancies': get_all_vacancies_by_hr_or_hrbp_id(request.user.id, )
@@ -43,19 +43,19 @@ def find_candidates(request):
     if 'find' in request.POST:
         candidates_list = Candidate.objects.all()
         print(candidates_list.count())
-        main_vacancy = Vacancy()
+        main_vacancy = Vacancy.objects.create()
         if request.POST.get('main_vacancy_id') != "":
             main_vacancy = Vacancy.objects.get(id=request.POST.get('main_vacancy_id'))
         print(main_vacancy)
         if request.POST.get('speciality') != "":
-            candidates_list = candidates_list.filter(speciality=request.POST.get('speciality'))
+            candidates_list = candidates_list.filter(speciality_id=request.POST.get('speciality'))
             main_vacancy.speciality_id = request.POST.get('speciality')
         else:
             main_vacancy.speciality.specialityName = ""
         print(candidates_list.count())
         print(main_vacancy)
         if request.POST.get('city') != "":
-            candidates_list = candidates_list.filter(city=request.POST.get('city'))
+            candidates_list = candidates_list.filter(city_id=request.POST.get('city'))
             main_vacancy.city_id = City.objects.get(id=request.POST.get('city'))
         else:
             main_vacancy.city.cityName = ""
@@ -196,11 +196,73 @@ def hr_archive_vacancies(request):
 
 
 @login_required
-def hr_messenger(request):
+def hr_messenger_to_hrbp(request, id):
+    user = CustomUser.objects.get(id=request.user.id)
+    addressee = CustomUser.objects.get(id=id)
     context = {
-
+        'addressee': addressee,
+        'messages': Message.objects.filter(sender=user, recipient=addressee).order_by('created')
+                    | Message.objects.filter(sender=addressee, recipient=user).order_by('created')
     }
+    if 'send' in request.POST:
+        message = Message(recipient=addressee, sender=user, subject=request.POST.get('subject'),
+                          body=request.POST.get('body'))
+        message.save()
+        # send_mail(
+        #     request.POST.get('subject'),
+        #     request.POST.get('body'),
+        #     user.email,
+        #     [addressee.email],
+        #     fail_silently=False,
+        # )
     return render(request, 'hr-messenger.html', context=context)
+
+
+@login_required
+def hr_messenger_to_customer(request, id):
+    user = CustomUser.objects.get(id=request.user.id)
+    addressee = Customer.objects.get(id=id)
+    context = {
+        'addressee': addressee,
+        'messages': Message.objects.filter(sender=user, email=addressee.email).order_by('created')
+                    | Message.objects.filter(email=addressee.email, recipient=user).order_by('created')
+    }
+    if 'send' in request.POST:
+        message = Message(email=addressee.email, sender=user, subject=request.POST.get('subject'),
+                          body=request.POST.get('body'))
+        # send_mail(
+        #     request.POST.get('subject'),
+        #     request.POST.get('body'),
+        #     user.email,
+        #     [addressee.email],
+        #     fail_silently=False,
+        # )
+        message.save()
+    return render(request, 'hr-messenger.html', context=context)
+
+
+@login_required
+def hr_messenger_to_candidate(request, id):
+    user = CustomUser.objects.get(id=request.user.id)
+    addressee = Candidate.objects.get(id=id)
+    context = {
+        'addressee': addressee,
+        'messages': Message.objects.filter(sender=user, email=addressee.email).order_by('created')
+                    | Message.objects.filter(email=addressee.email, recipient=user).order_by('created')
+    }
+    if 'send' in request.POST:
+        message = Message(email=addressee.email, sender=user, subject=request.POST.get('subject'),
+                          body=request.POST.get('body'))
+        # send_mail(
+        #     request.POST.get('subject'),
+        #     request.POST.get('body'),
+        #     user.email,
+        #     [addressee.email],
+        #     fail_silently=False,
+        # )
+        message.save()
+    return render(request, 'hr-messenger.html', context=context)
+
 
 
 # TODO Аделина сделай нормальный css и html для этой страницы спасибо большое
@@ -245,7 +307,6 @@ def hr_statistics(request):
 @login_required
 def vacancy_edit_add(request):
     custom_request_user = CustomUser.objects.get(id=request.user.id)
-
     vacancy = None
     if 'save' in request.POST:
         if not request.POST.get('id'):
@@ -362,13 +423,6 @@ def edit_hr_by_id(request, id):
     return render(request, 'hr-edit-or-add.html', context=context)
 
 
-def search_resumes(request):
-    response = requests.get(url='http://127.0.0.1:5000/resumes')
-    resumes_json = response.json()
-    resumes = resumes_json['items']
-    return render(request, 'search-resumes.html', {'resumes': resumes})
-
-
 @login_required
 def vacancy_information(request, id):
     vacancy = Vacancy.objects.filter(id=id)[0]
@@ -378,146 +432,6 @@ def vacancy_information(request, id):
         'candidates': Candidate.objects.filter(vacancy_id=vacancy.id)
     }
     return render(request, 'vacancy-information.html', context=context)
-
-
-# User = get_user_model()
-#
-# def send_message(request):
-#     if request.method == 'POST':
-#         sender = get_object_or_404(User, id=request.POST['sender_id'])
-#         recipient = get_object_or_404(User, id=request.POST['recipient_id'])
-#         message_body = request.POST['message_body']
-#         message = MessageModel.objects.create(user=sender, recipient=recipient, body=message_body)
-#         message.save()
-#         return JsonResponse({"message": "message sent successfully."}, status=201)
-#     else:
-#         return JsonResponse({"error": "Invalid method."}, status=400)
-#
-# def get_messages(request, user_id, recipient_id):
-#     if request.method == 'GET':
-#         user = get_object_or_404(User, id=user_id)
-#         recipient = get_object_or_404(User, id=recipient_id)
-#         messages = MessageModel.objects.filter(user=user, recipient=recipient)
-#         messages_list = list(messages.values())
-#         return JsonResponse(messages_list, safe=False)
-#     else:
-#         return JsonResponse({"error": "Invalid method."}, status=400)
-
-
-def message_list(request):
-    custom_request_user = CustomUser.objects.get(id=request.user.id)
-
-    if custom_request_user.is_HR:
-        recipient = custom_request_user.hr.hRBP  # TODO что это?
-    else:
-        pass  # TODO what else?
-    messages = MessageModel.objects.filter(user=request.user, recipient=recipient)
-    return render(request, 'hr-messenger.html', {'messages': messages, 'recipient': recipient})
-
-
-# def register_page(request):
-#     return render(request, 'register_page.html')
-
-def send_message(request):
-    message = MessageModel(user=get_user(json.loads(request.body)["user"]),
-                           recipient=get_user(json.loads(request.body)["recipient"]),
-                           body=json.loads(request.body)["body"])
-    message.save()
-    return JsonResponse({'message': 'success'})
-
-
-#
-# @csrf_exempt
-# def create_user(request):
-#     if request.method == 'POST':
-#         username = json.loads(request.body)["username"]
-#         password = json.loads(request.body)["password"]
-#         if username and password:
-#             try:
-#                 user = User.objects.get(username=username)
-#                 return JsonResponse({'error': 'User already exists.'}, status=400)
-#             except ObjectDoesNotExist:
-#                 user = User.objects.create_user(username, password=password)
-#                 print("created")
-#                 return JsonResponse({'success': 'User created successfully.'}, status=200)
-#         else:
-#             return JsonResponse({'error': 'Missing username or password.'}, status=400)
-#     else:
-#         return JsonResponse({'error': 'Invalid request.'}, status=400)
-
-
-def get_user(username):
-    try:
-        user = CustomUser.objects.get(username=username)
-        print(username)
-        return user
-    except ObjectDoesNotExist:
-        return JsonResponse({'error': 'User not found.'}, status=404)
-
-
-def get_user_messages(request, username):
-    """
-    Returns a JSON response with all messages where the given user is either the sender or the recipient.
-    """
-    try:
-        user = get_user(username=username)
-    except ObjectDoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
-
-    user_messages = MessageModel.objects.filter(Q(user=user) | Q(recipient=user))
-
-    message_list = []
-    for message in user_messages:
-        is_recipient = (message.recipient == user)
-        message_list.append({
-            "body": message.body,
-            "timestamp": message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-            "is_recipient": is_recipient
-        })
-
-    return JsonResponse(message_list, safe=False)
-
-
-def get_user_messages_json(username, recipient):
-    """
-    Returns a JSON response with all messages where the given user is either the sender or the recipient.
-    """
-    try:
-        user = get_user(username=username)
-    except ObjectDoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
-    try:
-        recipient = get_user(username=recipient)
-    except ObjectDoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
-
-    user_messages = MessageModel.objects.filter(Q(user=user) and Q(recipient=recipient))
-
-    message_list = []
-    for message in user_messages:
-        is_recipient = (message.recipient == user)
-        message_list.append({
-            "body": message.body,
-            "timestamp": message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-            "is_recipient": is_recipient
-        })
-    message_list.reverse()
-    return message_list
-
-
-def send_message_test(request):
-    text = "3"
-    token = "6293682583:AAFix7d2pbBcvjh2nTnlhMZaeptTqUCa8g0"
-    chat_id = "0"
-    url_req = "https://api.telegram.org/bot"+token+"/messages/getHistory"
-    results = requests.get(url_req).json()
-
-    if results['ok']:
-        for result in results['result']:
-            print(result)
-    else:
-        print('Error occurred:', results['description'])
-    return HttpResponseRedirect('/')
 
 
 def login_view(request):

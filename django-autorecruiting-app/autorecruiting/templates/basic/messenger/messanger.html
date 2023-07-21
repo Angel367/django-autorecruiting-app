@@ -4,25 +4,26 @@
 <div class="messenger-module" id="messenger-module">
 
     <div class="messenger-header">
-        АДРЕСАТ
+
+        {{ addressee.surname }} {{ addressee.name }} {{ addressee.patronymic }}
+        {{ addressee.first_name }} {{ addressee.last_name }}
     </div>
     <div class="messenger-page" id="messenger_page">
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/messenger/message.css' %}">
-        {% include 'basic/messenger/message-from-me.html'%}
-        {% include 'basic/messenger/message-from-me.html'%}
-        {% include 'basic/messenger/message-to-me.html'%}
-        {% include 'basic/messenger/message-from-me.html'%}
-        {% include 'basic/messenger/message-to-me.html'%}
-        {% include 'basic/messenger/message-to-me.html'%}
-        {% include 'basic/messenger/message-to-me.html'%}
-        {% include 'basic/messenger/message-from-me.html'%}
-        {% include 'basic/messenger/message-from-me.html'%}
-        {% include 'basic/messenger/message-from-me.html'%}
+        {% for message in messages %}
+        {% if message.sender == user %}
+        {% include 'basic/messenger/message-from-me.html' with message=message%}
+        {% else %}
+        {% include 'basic/messenger/message-to-me.html' with message=message%}
+        {% endif %}
+        {% endfor %}
     </div>
-    <form>
-        <textarea placeholder="Введите сообщение..."  ></textarea>
-        <button type="submit">
+    <form action="/hr/messenger/hr/{{ addressee.id}}" method="post">
+        {% csrf_token %}
+        <input type="text" name="subject" placeholder="Тема">
+        <textarea name="body" placeholder="Введите сообщение..."  ></textarea>
+        <button type="submit" name="send">
             <i class="fa fa-envelope-o" aria-hidden="true"></i>
         </button>
     </form>

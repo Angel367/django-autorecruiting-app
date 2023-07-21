@@ -1,9 +1,11 @@
 <div class="message from-me">
+
     <div class="message-text">
-        Сообщение от меня
+        <p>{{ message.subject }}</p>
+        <p>{{ message.body }}</p>
     </div>
 
     <div class="message-time">
-        yyyy-MM-dd hh:mm
+        {{ message.created }}
     </div>
 </div>

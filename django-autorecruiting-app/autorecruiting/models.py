@@ -137,59 +137,20 @@ class Candidate(models.Model):
         return self.interviewDate.strftime("%Y-%m-%d")
 
 
-class MessageModel(Model):
-    """
-    This class represents a chat message. It has an owner (user), timestamp and
-    the message body.
-
-    """
-    user = ForeignKey(CustomUser, on_delete=CASCADE, verbose_name='user',
-                      related_name='from_user', db_index=True)
-    recipient = ForeignKey(CustomUser, on_delete=CASCADE, verbose_name='recipient',
-                           related_name='to_user', db_index=True)
-    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False,
-                              db_index=True)
-    body = TextField('body')
+class Message(Model):
+    sender = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    recipient = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name="messages")
+    name = models.CharField(max_length=200, null=True, blank=True)
+    email = models.EmailField(max_length=200, null=True, blank=True)
+    subject = models.CharField(max_length=200, null=True, blank=True)
+    body = models.TextField()
+    is_read = models.BooleanField(default=False, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id)
+        return self.subject
 
-    def characters(self):
-        """
-        Toy function to count body characters.
-        :return: body's char number
-        """
-        return len(self.body)
-
-    def notify_ws_clients(self):
-        """
-        Inform client there is a new message.
-        """
-        notification = {
-            'type': 'recieve_group_message',
-            'message': '{}'.format(self.id)
-        }
-
-        channel_layer = get_channel_layer()
-        print("user.id {}".format(self.user.id))
-        print("user.id {}".format(self.recipient.id))
-
-        async_to_sync(channel_layer.group_send)("{}".format(self.user.id), notification)
-        async_to_sync(channel_layer.group_send)("{}".format(self.recipient.id), notification)
-
-    def save(self, *args, **kwargs):
-        """
-        Trims white spaces, saves the message and notifies the recipient via WS
-        if the message is new.
-        """
-        self.body = self.body.strip()  # Trimming whitespaces from the body
-        super(MessageModel, self).save(*args, **kwargs)
-        # if new is None:
-        # self.notify_ws_clients()
-
-    # Meta
     class Meta:
-        app_label = 'autorecruiting'
-        verbose_name = 'message'
-        verbose_name_plural = 'messages'
-        ordering = ('-timestamp',)
+        ordering = ['is_read', '-created']
