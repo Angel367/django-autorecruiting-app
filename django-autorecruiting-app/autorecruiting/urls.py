@@ -31,10 +31,9 @@ urlpatterns = [
 
     path('hr/<int:id>/own-vacancies/', views.hr_own_vacancies, name='hr-by-id-own-vacancies'),
     path('hr/statistics/', views.hr_statistics, name='hr-statistics'),
-    # path('hr/messenger/', views.hr_messenger, name='hr-messenger'),
     path('vacancy-information/<int:id>', views.vacancy_information, name='vacancy-information'),
     path('hr/messenger/hr/<int:id>', views.hr_messenger_to_hrbp, name='hr-messenger-hrbp'),
-    path('hr/messenger/customer/<int:id>', views.hr_messenger_to_customer, name='hr-messenger-customer'),
+    # path('hr/messenger/customer/<int:id>', views.hr_messenger_to_customer, name='hr-messenger-customer'),
     path('hr/messenger/candidate/<int:id>', views.hr_messenger_to_candidate, name='hrs-messenger-candidate'),
 
 

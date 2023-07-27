@@ -14,14 +14,19 @@ def on_start_function():
     generate_candidates()
 
 
-def generate_customers(amount=3):
+def generate_customers(amount=5):
     for i in range(amount):
         Customer.objects.create(
-            name="ЗаказчикИмя" + str(i),
-            surname="ЗаказчикФамилия" + str(i),
-            patronymic="ЗаказчикОтчество" + str(i),
-            phone="91919191919",
-            email="customer" + str(i) + "@gmail.com",
+            user=CustomUser.objects.create_user(
+                username="Заказчик" + str(i),
+                last_name="ЗаказчикФамилия" + str(i),
+                first_name="ЗаказчикИмя" + str(i),
+                patronymic="ЗаказчикОтчество" + str(i),
+                phone="6723647198",
+                email="Customer" + str(i) + "@gmail.com",
+                password="12345678",
+                is_Customer=True
+            )
         )
 
 
@@ -50,7 +55,7 @@ def generate_city(amount=4):
 def generate_users(amount_HR=25, amount_HRBP=5):
     for i in range(0, amount_HRBP):
         HRBP.objects.create(
-            customer_id=random.randint(1, len(Customer.objects.all())),
+            customer_id=1 + i,
             user=CustomUser.objects.create_user(
                 username="HRBP" + str(i),
                 last_name="HRBPФамилия" + str(i),
@@ -78,7 +83,7 @@ def generate_users(amount_HR=25, amount_HRBP=5):
         )
 
 
-def generate_vacancies(amount=200):
+def generate_vacancies(amount=50):
     for i in range(amount):
         vacancy = Vacancy()
         vacancy.speciality_id = random.randint(1, len(Speciality.objects.all()))
@@ -100,9 +105,9 @@ def generate_vacancies(amount=200):
         vacancy.save()
 
 
-def generate_candidates(amount=1000):
+def generate_candidates(amount=50):
     for i in range(amount):
-        Candidate.objects.create(
+        c = Candidate.objects.create(
             speciality_id=random.randint(1, len(Speciality.objects.all())),
             name="CANDIDATEname" + str(i),
             surname="CANDIDATEsurname" + str(i),
@@ -114,9 +119,11 @@ def generate_candidates(amount=1000):
             relocationReady=random.randint(0, 1),
             expectedSalaryFrom=random.randint(100000, 300000),
             expectedSalaryTo=random.randint(400000, 700000),
-            status=random.choice([choice[0] for choice in CANDIDATE_STATUS_CHOICES]),
-            vacancy_id=random.randint(1, len(Vacancy.objects.filter(isArchived=False))),
             educationLevel=random.choice([choice[0] for choice in EDUCATION_CHOICES]),
             city_id=random.randint(1, len(City.objects.all())),
             email="CANDIDATE" + str(i) + "@gmail.com",
         )
+        if Vacancy.objects.get(id=i+1) and not Vacancy.objects.get(id=i+1).isArchived:
+            c.vacancy_id = i+1
+            c.status = random.randint(1, 7)
+        c.save()

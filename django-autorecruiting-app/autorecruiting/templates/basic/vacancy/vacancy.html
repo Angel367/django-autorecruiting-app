@@ -39,6 +39,13 @@
             <dd>
                  {{ vacancy.vacancyDescription }}
             </dd>
+            <dt>Тествое задание</dt>
+            <dd>
+                {{ vacancy.testTaskDescription }}
+            </dd>
+            <dd>
+                <a href="{{ vacancy.testTaskLink }}">{{ vacancy.testTaskLink }}</a>
+            </dd>
         </dl>
         {% if user.is_HRBP %}
             <div>

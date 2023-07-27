@@ -19,7 +19,11 @@
         {% endif %}
         {% endfor %}
     </div>
+    {% if addressee.first_name %}
     <form action="/hr/messenger/hr/{{ addressee.id}}" method="post">
+    {% else %}
+    <form action="/hr/messenger/candidate/{{ addressee.id}}" method="post">
+        {% endif %}
         {% csrf_token %}
         <input type="text" name="subject" placeholder="Тема">
         <textarea name="body" placeholder="Введите сообщение..."  ></textarea>

@@ -17,8 +17,13 @@
                 <input name="id" type="text" value="{{ vacancy.id }}" hidden>
            </div>
         <div class="vacancy-desc">
+
             <label for="vacancy-desc">Описание</label>
             <textarea name="vacancyDescription">{{ vacancy.vacancyDescription }}</textarea>
+
+            <label for="vacancy-desc-task">Тествое задание</label>
+            <textarea name="testTaskDescription" placeholder="Письмо к заданию">{{ vacancy.testTaskDescription }}</textarea>
+            <input type="text" placeholder="Ссылка на задание" name="testTaskLink" value="{{ vacancy.testTaskLink }}">
 
             <div>
                 <label>Зарплата от </label>
@@ -98,21 +103,6 @@
                         {% endfor %}
                     </select>
                 </div>
-
-{#                <div>#}
-{#                    <label>Страна</label>#}
-{#                    <select name="country">#}
-{#                        {% if vacancy %}#}
-{#                        <option value="{{ vacancy.city.country.countryName }}">{{ vacancy.city.country.countryName }}</option>#}
-{#                        {% endif %}#}
-{#                        {% for country in countries %}#}
-{#                            {% if country.id != vacancy.city.country_id %}#}
-{#                            <option value={{ country.id }}>{{ country.countryName }}</option>#}
-{#                            {% endif %}#}
-{#                        {% endfor %}#}
-{##}
-{#                    </select>#}
-{#                </div>#}
                 <div>
                     <label>Локация</label>
                     <select name="city">

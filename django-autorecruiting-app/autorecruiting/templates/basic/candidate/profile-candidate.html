@@ -10,28 +10,53 @@
         </div>
         <div class="candidate-info">
             <div class="candidate-name"> {{ candidate.surname }} {{ candidate.name }} {{ candidate.patronymic }} </div>
-            <div class="candidate-age">
-                <span>Возраст: </span>
-                <span>{{ candidate.birthdayDate|display_age }} </span>
-            </div>
+            <div class="vacancy-desc">
+            <div>
+                <div><span>Статус кандидата</span>
+                <span>
+                    {{ candidate.get_status_display }}
+                </span></div>
+                <div><span>Почта</span>
+                    <span>{{ candidate.email }}</span>
+                </div>
+                <div><span>Номер</span>
+                    <span>{{ candidate.phone }}</span>
+                </div>
+                <div><span>Возраст</span>
+                <span>
+                    {{ candidate.birthdayDate|display_age }}</span></div>
 
+                <div><span>Образование</span>
+                <span>
+                    {{ candidate.get_educationLevel_display }}
+                </span></div>
+                <div><span>Опыт работы</span>
+                <span>
+                    {{ candidate.workExperienceDuration|display_months }}
+                </span></div>
+            <div>
+                <span>Готовность к переезду</span>
+                <span>
+                    {% if candidate.relocationReady == True %}Да
+                    {% else %}Нет
+                    {% endif %}
+                </span>
+            </div>
+                <div> <span>Ожидаемая зарплата</span>
+
+                    <span>{{ candidate.expectedSalaryFrom }} - {{ candidate.expectedSalaryTo }}
+                </span></div>
+              <div><span>Специальность</span>
+
+
+                    <span>{{ candidate.speciality.specialityName }}</span>
+                </div>
+
+            </div>
+            <a download href="{{ candidate.resumeLink }}">Скачать резюме</a>
         </div>
-        <div class="candidate-experience">
-                <span>Опыт работы: </span>
-                <span> {{ candidate.workExperienceDuration|display_months }}</span>
-            </div>
-        <div class="candidate-info vacany">
-            <div class="vacancy-name">
-                <span>Вакансия: </span>
-                <span> {{ candidate.vacancy.name }} </span>
-            </div>
-            <div class="candidate-age">
-                <span> Статус: </span>
-                <span>{{ candidate.get_status_display }}</span>
-            </div>
-        </div>
 
-
+</div>
     </div>
     <div class="profile-panel-manage">
         <a href="/candidate-information/main/{{ candidate.id }}"><div>Основная информация</div></a>

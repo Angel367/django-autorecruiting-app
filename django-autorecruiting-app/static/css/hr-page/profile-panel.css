@@ -27,3 +27,6 @@ main{
     flex-direction: column;
     gap: .5em;
 }
+.vacancy-desc > div > div span:nth-child(1) {
+    content: ':';
+}
