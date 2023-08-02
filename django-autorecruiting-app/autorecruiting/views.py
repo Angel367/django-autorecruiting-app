@@ -1,6 +1,6 @@
 import base64
 import io
-
+from django.views.generic import CreateView
 import matplotlib.pyplot as plt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -100,7 +100,7 @@ def candidate_information_messenger(request, id):
 
 @login_required
 def candidate_information_main(request, id):
-    # if ''request.POST:
+    # if '' in request.POST:
 
     context = {
         'vacancies': get_all_vacancies_by_hr_or_hrbp_id(request.user.id),
@@ -193,11 +193,18 @@ def hr_messenger_to_hrbp(request, id):
 
 @login_required
 def hr_messenger_to_candidate(request, id):
-    user = CustomUser.objects.get(id=request.user.id)
     addressee = Candidate.objects.get(id=id)
+    user = CustomUser.objects.get(id=request.user.id)
+    messages = Message.objects.filter(sender=user, email=addressee.email).order_by('created')
+    if user.is_HR:
+        user1 = HRBP.objects.get(user_id=user.hRBP.user.id)
+        user2 = Customer.objects.get(user_id=user1.customer.user.id)
+        messages = messages | Message.objects.filter(sender=user1, email=addressee.email).order_by('created') \
+                   | Message.objects.filter(sender=user2, email=addressee.email).order_by('created') \
+              |  Message.objects.filter(recipient=user2, email=addressee.email).order_by('created')
     context = {
         'addressee': addressee,
-        'messages': Message.objects.filter(sender=user, email=addressee.email).order_by('created'),
+        'messages': messages,
         # | Message.objects.filter(email=addressee.email, recipient=user).order_by('created')
         'candidate': Candidate.objects.get(id=id),
         'CANDIDATE_STATUS_CHOICES': dict(CANDIDATE_STATUS_CHOICES)
@@ -344,8 +351,11 @@ def add_vacancy(request):
 
 
 @login_required
-def add_hr(request):
-    return render(request, 'hr-edit-or-add.html')
+class CreateHR(CreateView):
+    model = HR
+    fields = ["__all__"]
+# def add_hr(request):
+#     return render(request, 'hr-edit-or-add.html')
 
 
 @login_required
