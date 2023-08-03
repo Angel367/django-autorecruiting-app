@@ -1,7 +1,6 @@
-from datetime import datetime
+import random
 
 from .models import *
-import random
 
 
 def on_start_function():
@@ -12,11 +11,13 @@ def on_start_function():
     generate_users()
     generate_vacancies()
     generate_candidates()
+    # generate_vacancy_candidates()
 
 
 def generate_customers(amount=5):
     for i in range(amount):
         Customer.objects.create(
+            nameOfCompany="superComp" + i.__str__(),
             user=CustomUser.objects.create_user(
                 username="Заказчик" + str(i),
                 last_name="ЗаказчикФамилия" + str(i),
@@ -56,6 +57,7 @@ def generate_users(amount_HR=25, amount_HRBP=5):
     for i in range(0, amount_HRBP):
         HRBP.objects.create(
             customer_id=1 + i,
+
             user=CustomUser.objects.create_user(
                 username="HRBP" + str(i),
                 last_name="HRBPФамилия" + str(i),
@@ -65,6 +67,7 @@ def generate_users(amount_HR=25, amount_HRBP=5):
                 email="HRBP" + str(i) + "@gmail.com",
                 password="12345678",
                 is_HRBP=True
+
             )
         )
     for j in range(0, amount_HR):
@@ -86,6 +89,8 @@ def generate_users(amount_HR=25, amount_HRBP=5):
 def generate_vacancies(amount=50):
     for i in range(amount):
         vacancy = Vacancy()
+        vacancy.chosenLetter = "Супер пупер письмо для отправки кандидату"
+        vacancy.testTaskLetter = "Супер пупер пояснение к тестовому"
         vacancy.speciality_id = random.randint(1, len(Speciality.objects.all()))
         vacancy.name = "Вакансия №" + str(i)
         vacancy.hR_id = random.randint(1, len(HR.objects.all()))  # Set HR randomly
@@ -115,7 +120,7 @@ def generate_candidates(amount=50):
             phone="8898897767",
             workExperienceDuration=random.randint(1, 300),
             birthdayDate=datetime(2001, 5, 12),
-            resumeLink="",
+            resumeLink="супер ссылка",
             relocationReady=random.randint(0, 1),
             expectedSalaryFrom=random.randint(100000, 300000),
             expectedSalaryTo=random.randint(400000, 700000),
@@ -123,7 +128,4 @@ def generate_candidates(amount=50):
             city_id=random.randint(1, len(City.objects.all())),
             email="CANDIDATE" + str(i) + "@gmail.com",
         )
-        if Vacancy.objects.get(id=i+1) and not Vacancy.objects.get(id=i+1).isArchived:
-            c.vacancy_id = i+1
-            c.status = random.randint(1, 7)
         c.save()

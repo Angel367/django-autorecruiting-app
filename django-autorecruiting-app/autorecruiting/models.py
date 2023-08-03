@@ -89,7 +89,7 @@ class City(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    nameOfCompany = models.CharField(max_length=31)
+    nameOfCompany = models.CharField(max_length=31, default="SuperCompany")
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
 
 
@@ -104,7 +104,7 @@ class HR(models.Model):
 
 
 class Vacancy(models.Model):
-    chosenLetter = models.TextField()
+    chosenLetter = models.TextField(default="")
 
     speciality = models.ForeignKey(Speciality, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=127)
@@ -125,9 +125,9 @@ class Vacancy(models.Model):
     educationLevel = models.IntegerField(choices=EDUCATION_CHOICES)
     isArchived = models.BooleanField(default=False)  # заменить на статус
 
-    testTaskDescription = models.TextField()
+    testTaskDescription = models.TextField(default="")
     testTaskLink = models.CharField(max_length=127)
-    testTaskLetter = models.TextField()
+    testTaskLetter = models.TextField(default="")
 
 
 class Candidate(models.Model):
@@ -157,18 +157,14 @@ class Message(Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
     subject = models.CharField(max_length=200, null=True, blank=True)
-    body = models.TextField()
+    body = models.TextField(default="")
     is_read = models.BooleanField(default=False, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    def __init__(self, body, sender=None, subject="", recipient=None, name="", email="", *args, **kwargs):
+    def __init__(self, body,  subject="",   *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.subject = subject
         self.body = body
-        self.recipient = recipient
-        self.name = name
-        self.email = email
-        self.sender = sender
 
         # send_mail(
         #     body=body
@@ -237,11 +233,9 @@ class Interview(models.Model):
         if self.interviewer.is_Customer:
             VacancyCandidate.objects.get(interviewCustomer=self).send_offer(self.interviewer)
 
-
     def set_not_accepted(self, comment):
         self.status = 2
         self.comment = comment
-
         if self.interviewer.is_Customer:
             VacancyCandidate.objects.get(interviewCustomer=self).set_status(6)
             vac = VacancyCandidate.objects.get(interviewCustomer=self).get_vacancy()
@@ -267,8 +261,8 @@ class Interview(models.Model):
 
 
 class TestTask(models.Model):
-    letter_for_candidate = models.TextField()
-    task = models.TextField()
+    letter_for_candidate = models.TextField(default="")
+    task = models.TextField(default="")
     link = models.CharField(max_length=255)
     startDate = models.DateTimeField(auto_now_add=True)
     finishDate = models.DateTimeField(default=datetime(1970, 1, 1))

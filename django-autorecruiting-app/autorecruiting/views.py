@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import redirect
 from django.shortcuts import render
-
+from .forms import *
 from .models import *
 from .test_data_create import on_start_function
 
@@ -323,12 +323,13 @@ def vacancy_edit_add(request):
 def edit_vacancy(request, id):
     custom_request_user = CustomUser.objects.get(id=request.user.id)
     context = {
-        'EMPLOYMENT_TYPE_CHOICES': dict(EMPLOYMENT_TYPE_CHOICES),
-        'EDUCATION_CHOICES': dict(EDUCATION_CHOICES),
-        'WORK_SCHEDULE_CHOICES': dict(WORK_SCHEDULE_CHOICES),
-        'cities': City.objects.all().order_by('country_id'),
-        'vacancy': Vacancy.objects.get(id=id),
-        'specialities': Speciality.objects.all()
+        # 'EMPLOYMENT_TYPE_CHOICES': dict(EMPLOYMENT_TYPE_CHOICES),
+        # 'EDUCATION_CHOICES': dict(EDUCATION_CHOICES),
+        # 'WORK_SCHEDULE_CHOICES': dict(WORK_SCHEDULE_CHOICES),
+        # 'cities': City.objects.all().order_by('country_id'),
+        # 'vacancy': Vacancy.objects.get(id=id),
+        # 'specialities': Speciality.objects.all()
+        "form": VacancyForm()
     }
     if custom_request_user.is_HRBP:
         context.update({'hrs': HRBP.objects.get(user_id=request.user.id).hr_set.all()})
@@ -350,10 +351,10 @@ def add_vacancy(request):
     return render(request, 'vacancy-edit-or-add.html', context=context)
 
 
-@login_required
-class CreateHR(CreateView):
-    model = HR
-    fields = ["__all__"]
+# @login_required
+# class CreateHR(CreateView):
+#     model = HR
+#     fields = ["__all__"]
 # def add_hr(request):
 #     return render(request, 'hr-edit-or-add.html')
 
@@ -394,7 +395,7 @@ def vacancy_information(request, id):
 
     context = {
         'vacancy': vacancy,
-        'candidates': Candidate.objects.filter(vacancy_id=vacancy.id)
+        # 'candidates': Candidate.objects.filter(vacancy_id=vacancy.id)
     }
     return render(request, 'vacancy-information.html', context=context)
 

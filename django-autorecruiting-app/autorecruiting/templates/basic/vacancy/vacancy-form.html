@@ -10,6 +10,7 @@
     <form class="panel-manage" method="post" action="/vacancy-edit-add/">
     {% csrf_token %}
     <div class="vacancy-info">
+    {{ form.as_div }}
 {#    TODO add city to vacancy#}
 {#            <div class="vacancy-header">#}
 {#                <label for="vacancy-name">Вакансия № {{ vacancy.id }}:</label>#}
