@@ -19,6 +19,7 @@ from django.urls import path, include
 
 
 urlpatterns = [
+    path('admin/doc/', include('django.contrib.admindocs.urls')),   # for documentation
     path('admin/', admin.site.urls),
     path('', include('autorecruiting.urls'))
 ]

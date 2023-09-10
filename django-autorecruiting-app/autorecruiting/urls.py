@@ -19,7 +19,7 @@ urlpatterns = [
     path('edit-vacancy/<int:id>', views.edit_vacancy, name='edit-vacancy'),
     # path('search-resumes/', views.search_resumes, name='search-resumes'),
     path('vacancy-edit-add/', views.vacancy_edit_add, name='add-edit-post-vacancy'),
-
+    path('hr/statistics/', views.error_500, name='add-edit-post-vacancy'),
     path('hr-edit-add/', views.hr_edit_add, name='add-edit-post-hr'),
     # path('hr/add/', views.add_hr, name='add-hr'),
     path('hr/edit-by-id/<int:id>', views.edit_hr_by_id, name='edit-hr-by-id'),

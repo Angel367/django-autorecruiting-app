@@ -4,7 +4,7 @@ from django.views.generic import CreateView
 import matplotlib.pyplot as plt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import redirect
 from django.shortcuts import render
 from .forms import *
@@ -55,7 +55,7 @@ def find_candidates(request):
         print(candidates_list.count())
         if request.POST.get('workExperienceTo') != "":
             candidates_list = candidates_list.filter(
-                workExperienceDuration__range=(0, request.POST.get('workExperienceTo')))
+                workExperienceDuration__range=(0, request.POST.get('workExperienceTo')+str(5)))
             context.update({'workExperienceTo': request.POST.get('workExperienceTo')})
         print(candidates_list.count())
         if request.POST.get('suggestedSalaryFrom') != "":
@@ -421,3 +421,7 @@ def login_view(request):
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
+
+
+def error_500(request):
+    return HttpResponseServerError()
